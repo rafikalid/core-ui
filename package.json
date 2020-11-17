@@ -1,0 +1,29 @@
+{
+	"name": "Core-ui",
+	"version": "0.0.1",
+	"description": "lightweight & fast ui rendering framework",
+	"main": "build/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rafikalid/core-ui.git"
+	},
+	"keywords": [
+		"css",
+		"reactor",
+		"gridfw"
+	],
+	"author": "Khalid rafik",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/rafikalid/core-ui/issues"
+	},
+	"homepage": "https://github.com/rafikalid/core-ui#readme",
+	"devDependencies": {
+		"gulp-gridfw": "^1.0.0",
+		"gulp": "^4.0.2"
+	},
+	"dependencies": {}
+}
