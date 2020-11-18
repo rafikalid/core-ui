@@ -5,7 +5,7 @@
  *
  * @example	_popupPositionCalc(elementRect, 'top', 'bottom', 'right', popupRect, 'width', 'height', margin);
 ###
-_popupPositionCalc= (obj, elementRect, x, xAlt, y, popupRect, popupY, popupX, margin)->
+_popupPositionCalc= (x, xAlt, y, popupY, popupX, element, popup, elementRect, popupRect, margin)->
 	# result
 	result=
 		position:	"#{x}-#{y}"
@@ -15,7 +15,7 @@ _popupPositionCalc= (obj, elementRect, x, xAlt, y, popupRect, popupY, popupX, ma
 		right:		null
 		width:		null
 		height:		null
-	w= result[popupX]= obj.size (if popupX is 'width' then innerWidth else innerHeight), popupRect[popupX], elementRect[popupX]
+	w= result[popupX]= @size (if popupX is 'width' then innerWidth else innerHeight), popupRect[popupX], elementRect[popupX]
 	# Cacl
 	mainSpace= elementRect[x]
 	altSpace= elementRect[xAlt]
@@ -50,72 +50,40 @@ _popupPositionCalc= (obj, elementRect, x, xAlt, y, popupRect, popupY, popupX, ma
 _POPUP_POS= ['top', 'right', 'bottom', 'left']
 _POPUP_POSITIONS=
 	# TOP
-	topLeft: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'top', 'bottom', 'left', popupRect, 'width', 'height', margin);
-	top: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'top', 'bottom', null, popupRect, 'width', 'height', margin);
-	topRight: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'top', 'bottom', 'right', popupRect, 'width', 'height', margin);
+	topLeft:	['top', 'bottom', 'left', 'width', 'height']
+	top:		['top', 'bottom', null, 'width', 'height']
+	topRight:	['top', 'bottom', 'right', 'width', 'height']
 	# BOTTOM
-	bottomLeft: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'bottom', 'top', 'left', popupRect, 'width', 'height', margin);
-	bottom: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'bottom', 'top', null, popupRect, 'width', 'height', margin);
-	bottomRight: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'bottom', 'top', 'right', popupRect, 'width', 'height', margin);
+	bottomLeft:	['bottom', 'top', 'left', 'width', 'height']
+	bottom:		['bottom', 'top', null, 'width', 'height']
+	bottomRight:['bottom', 'top', 'right', 'width', 'height']
 	# LEFT
-	leftTop: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'left', 'right', 'top', popupRect, 'height', 'width', margin);
-	left: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'left', 'right', null, popupRect, 'height', 'width', margin);
-	leftBottom: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'left', 'right', 'bottom', popupRect, 'height', 'width', margin);
+	leftTop:	['left', 'right', 'top', 'height', 'width']
+	left:		['left', 'right', null, 'height', 'width']
+	leftBottom:	['left', 'right', 'bottom', 'height', 'width']
 	# RIGHT
-	rightTop: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'right', 'left', 'top', popupRect, 'height', 'width', margin);
-	right: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'right', 'left', null, popupRect, 'height', 'width', margin);
-	rightBottom: (element, popup, elementRect, popupRect, margin)->
-		return _popupPositionCalc(elementRect, 'right', 'left', 'bottom', popupRect, 'height', 'width', margin);
+	rightTop:	['right', 'left', 'top', 'height', 'width']
+	right:		['right', 'left', null, 'height', 'width']
+	rightBottom:['right', 'left', 'bottom', 'height', 'width']
 
 ### PREDIFINED POSITIONS ###
-_POPUP_ANIM=
+_POPUP_ANIM= # [translateX, translateY]
 	# TOP
-	topLeft:
-		translateX: -5
-		translateY: -5
-	top:
-		translateY: -5
-	topRight:
-		translateX: 5
-		translateY: -5
+	topLeft:	[-5, -5]
+	top:		[0, -5]
+	topRight:	[5, -5]
 	# BOTTOM
-	bottomLeft:
-		translateX: -5
-		translateY: 5
-	bottom:
-		translateY: 5
-	bottomRight:
-		translateX: 5
-		translateY: 5
+	bottomLeft:	[-5, 5]
+	bottom:		[0, 5]
+	bottomRight:[5, 5]
 	# LEFT
-	leftTop:
-		translateX: -5
-		translateY: -5
-	left:
-		translateX: -5
-	leftBottom:
-		translateX: -5
-		translateY: 5
+	leftTop:	[-5, -5]
+	left:		[-5, 0]
+	leftBottom:	[-5, 5]
 	# RIGHT
-	rightTop:
-		translateX: 5
-		translateY: -5
-	right:
-		translateX: 5
-	rightBottom:
-		translateX: 5
-		translateY: 5
+	rightTop:	[5, -5]
+	right:		[5, 0]
+	rightBottom:[5, 5]
 
 ###*
  * Create popup
@@ -155,7 +123,10 @@ class _Popup
 		position= options.position
 		if typeof position is 'function'
 			@_position=	position
-		else unless @_position= _POPUP_POSITIONS[position]
+		else if position= _POPUP_POSITIONS[position]
+			# (element, popup, elementRect, popupRect, margin)->
+			@_position= _popupPositionCalc.bind(this, position[0], position[1], position[2], position[3], position[4]);
+		else
 			throw new Error "Illegal position value: #{position}"
 		@_currentPos= null # current position
 		# Close options
@@ -191,11 +162,11 @@ class _Popup
 		# Apply animation
 		anime.remove popupDiv
 		animB= _POPUP_ANIM[@_currentPos] or _POPUP_ANIM.top
-		animObj=
+		anime
 			targets: popupDiv
 			opacity: [0.5, 1]
-		animObj[k]= [animB[k], 0] for k in animB when animB.hasOwnProperty k
-		anime animObj
+			translateX:	[animB[0], 0]
+			translateY:	[animB[1], 0]
 		this # chain
 	###* Close popup ###
 	close: ->

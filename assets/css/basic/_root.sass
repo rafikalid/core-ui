@@ -1,0 +1,46 @@
+/**
+ * All components
+ */
+*, :after, :before
+	-webkit-box-sizing: border-box
+	box-sizing: border-box
+
+/**
+ * HTML & BODY
+ */
+html
+	background: $html-background
+	color: $text-color
+	-moz-osx-font-smoothing: grayscale
+	-webkit-font-smoothing: antialiased
+	// line-height: 1.42857143
+	line-height: 1.6
+	// font-family: "Roboto", "Helvetica", "Arial", sans-serif
+	font-family: $font-familly
+	font-size: $text-size
+	font-weight: 400
+	@extend %noselect
+html, body
+	margin: 0
+
+// direction
+.rtl
+	direction: rtl
+.ltr
+	direction: ltr
+
+// disable all events on an element
+%no-events,.no-events
+	pointer-events: none
+
+// disabled
+%disabled
+	@extend %no-events
+	box-shadow: none
+	opacity: .6
+.disabled
+	@extend %disabled
+	color: $text-disabled
+
+.loading
+	@extend %no-events

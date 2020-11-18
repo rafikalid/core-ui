@@ -1,0 +1,7 @@
+if file.type.startsWith('image/')
+	.card.flat.loading
+		.avatar.img
+		.truncate #{file.name}
+else
+	.card.flat
+		.truncate #{file.name}

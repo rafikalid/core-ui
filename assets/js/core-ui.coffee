@@ -39,6 +39,11 @@ do ->
 		# INTERNAL LIBS
 		#=include interfaces/**/_*.coffee
 
+	# HTML COMPONENTS
+	#==========================
+	```
+	#=include ../../tmp/components.js
+	```
 	#interface
 	window.Core= Core
 	# Init document

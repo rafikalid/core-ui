@@ -1,0 +1,25 @@
+/***********
+ * GRID
+ */
+.grid
+	display: grid
+.igrid
+	display: inline-grid
+
+// COL COUNT: grid.xs3
+@each $n,$s in (xs: $xs, sm: $sm, md:$md, lg:$lg, xl: $xl)
+	@media(min-width: #{$s})
+		@for $i from 2 through 12
+			.grid.#{$n}#{$i}
+				grid-template-columns: repeat($i, minmax(0, #{'#{100/$i}%'}))
+
+// COL SPAN
+@for $i from 2 through 12
+	.span#{$i}
+		grid-column: auto / span $i
+
+// GAP
+@each $i in 1 2 5 10 15 20
+	.gap#{$i}
+		grid-gap: #{'#{$i}px'}
+		gap: #{'#{$i}px'}

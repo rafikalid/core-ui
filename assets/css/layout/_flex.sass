@@ -1,0 +1,53 @@
+/***********
+ * FLEX
+ */
+.flex
+	display: flex
+.inline-flex, .iflex
+	display: inline-flex
+
+// Flex and inline-flex options
+.f
+	// Media size
+	&-sm
+		@media(min-width: $sm)
+			display: flex
+	&-md
+		@media(min-width: $md)
+			display: flex
+	&-lg
+		@media(min-width: $lg)
+			display: flex
+	// Direction
+	&-row
+		flex-direction: row
+	&-col
+		flex-direction: column
+	&-center
+		justify-content: center
+		align-items: center
+	&-xcenter
+		justify-content: center
+	&-ycenter
+		align-items: center
+
+/********
+ * Grow
+ */
+.grow1
+	flex-grow: 1
+.grow2
+	flex-grow: 2
+.grow3
+	flex-grow: 3
+
+
+/********
+ * Shrink
+ */
+.shrink0
+	flex-shrink: 0
+.shrink1
+	flex-shrink: 1
+.shrink2
+	flex-shrink: 2

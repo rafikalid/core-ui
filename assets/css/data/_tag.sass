@@ -1,0 +1,50 @@
+.tag
+	display: inline-block
+	// color: white
+	background-color: $border-color
+	padding: 2px 20px 2px 2px
+	line-height: 30px
+	font-size: 12px
+	border-radius: 2em
+	white-space: nowrap
+	.avatar
+		border-radius: 50% 0 0 50%
+		vertical-align: middle
+		margin-inline-end: 5px
+
+	&:empty
+		padding: 6px
+	&.primary
+		background-color: $primary
+	&.success
+		background-color: $success
+	&.info
+		background-color: $info
+	&.warn
+		background-color: $warning
+	&.danger
+		background-color: $danger
+	&.disabled
+		background-color: $bg-disabled
+		color: $disabled
+
+	&.outline
+		background-color: transparent
+		color: $text-color
+		border: 1px solid currentColor
+		&.primary
+			color: $primary
+		&.success
+			color: $success
+		&.info
+			color: $info
+		&.warn
+			color: $warning
+		&.danger
+			color: $danger
+		&.disabled
+			background-color: $bg-disabled
+			color: $disabled
+a.tag
+	&:hover
+		text-decoration: none

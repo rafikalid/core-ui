@@ -1,0 +1,55 @@
+a, .link
+	cursor: pointer
+	color: $link-color
+	text-decoration: none
+	transition: color .3s ease
+	outline: none
+	&.flat
+		color: inherit
+		@media(max-width: 600px)
+			&:hover
+				color: inherit
+				text-decoration: inherit
+	&:hover
+		color: $link-hover
+		text-decoration: underline
+	&:active
+		color: $link-active
+		text-decoration: underline
+	// &.hover
+	// 	&.primary:hover
+	// 		color: $primary
+	// 	&.success:hover
+	// 		color: $success
+	// 	&.info:hover
+	// 		color: $info
+	// 	&.warn:hover
+	// 		color: $warning
+	// 	&.danger:hover
+	// 		color: $danger
+
+	// &:not(.hover)
+	// 	&.default
+	// 		color: $text-color
+	// 	&.primary
+	// 		color: $primary
+	// 	&.success
+	// 		color: $success
+	// 	&.info
+	// 		color: $info
+	// 	&.warn
+	// 		color: $warning
+	// 	&.danger
+	// 		color: $danger
+
+// close
+// .close, .menuBtn
+// 	cursor: pointer
+// 	transition: color .3s ease
+// 	&:hover
+// 		color: $danger
+// 	@media(max-width: 600px)
+// 		&:hover
+// 			color: inherit
+// .menuBtn:hover
+// 	color: $link-hover

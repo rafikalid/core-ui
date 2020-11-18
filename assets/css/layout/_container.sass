@@ -1,0 +1,26 @@
+/**
+ * Container
+ */
+
+/*** MOBILE ***/
+%container
+	// margin: 5px auto
+	margin-left: auto
+	margin-right: auto
+	width: 100%
+	width: calc(100% - 10px)
+.container, .c
+	@extend %container
+
+.c-xs
+	@extend %container
+	max-width: 330px
+.c-sm
+	@extend %container
+	max-width: 600px
+.c-md
+	@extend %container
+	max-width: 800px
+.c-lg
+	@extend %container
+	max-width: 1200px
