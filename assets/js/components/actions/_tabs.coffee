@@ -14,13 +14,14 @@
 tabs: (event, args)->
 	tabsContainer= event.currentTarget
 	tabsContainerClassList= tabsContainer.classList
+	tabsContainerClassList.add 'r'	# Add relative class
 	# Cancel if active
 	currentTab= event.realTarget.closest '.tab'
-	return if (not currentTab) or currentTab.classList.has 'active'
+	return if (not currentTab) or currentTab.classList.contains 'active'
 	# Active tab
 	activeTab= tabsContainer.querySelector('.tab.active')
 	# Check tabs are initialized
-	if tabsContainerClassList.has 'tabs-enabled'
+	if tabsContainerClassList.contains 'tabs-enabled'
 		tabBar= tabsContainer.querySelector '.tabs-bar'
 	else
 		tabsContainerClassList.add 'tabs-enabled'
@@ -33,23 +34,25 @@ tabs: (event, args)->
 			barStyle.width= "#{activeTab.offsetWidth}px"
 			barStyle.left= "#{activeTab.offsetLeft}px"
 		tabsContainer.appendChild tabBar
-	# Get tab items
-	tabItems= tabsContainer.querySelectorAll ':scope>.tabItems'
-	unless tabItems.length
-		tabItems= tabsContainer.querySelector ':scope>*>.tabItems'
 	# Disactivate previous active tab
-	if activeTab
-		activeTab.classList.remove 'active'
-		if tabItem= tabItems[_elementIndexOf activeTab]
-			tabItem.classList.add 'hidden'
+	activeTab.classList.remove 'active' if activeTab
 	# Enable clicked tab
 	currentTab.classList.add 'active'
-	if tabItem= tabItems[_elementIndexOf currentTab]
-		tabItem.classList.add 'hidden'
+	# Get tab items
+	if container= tabsContainer.parentNode
+		tabItems= container.querySelectorAll ':scope>.tab-item'
+		unless tabItems.length
+			tabItems= container.querySelectorAll ':scope>*>.tab-item'
+		# show body
+		currentTabIndex= _elementIndexOf currentTab
+		for item, i in tabItems
+			if i is currentTabIndex then item.classList.add 'active'
+			else item.classList.remove 'active'
 	# Apply animation
-	anim.remove tabBar # stop previous animation
-	anim
+	anime.remove tabBar # stop previous animation
+	anime
 		targets:	tabBar
-		width:		activeTab.offsetWidth
-		left:		activeTab.offsetLeft
+		# duration:
+		width:		currentTab.offsetWidth
+		left:		currentTab.offsetLeft
 	return

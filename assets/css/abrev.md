@@ -5,6 +5,7 @@ p:	padding
 m:	margin
 w: width
 h: height
+b: border
 
 t-:	text
 h-: hidden (display none)

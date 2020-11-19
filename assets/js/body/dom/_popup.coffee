@@ -211,7 +211,7 @@ class _Popup
 
 	###* If the popup is open ###
 	```
-	get isOpen(){return @_isOpen;}
-	get popup(){return @_popup;}
-	get element(){return @_element;}
+	get isOpen(){return this._isOpen;}
+	get popup(){return this._popup;}
+	get element(){return this._element;}
 	```

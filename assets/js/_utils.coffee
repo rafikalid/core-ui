@@ -48,7 +48,7 @@ _runOnLoad= (fn)->
 	if document.readyState is 'complete'
 		fn()
 	else
-		window.addEventListener 'load', fn, {passive:yes, once: yes}
+		window.addEventListener 'DOMContentLoaded', fn, {passive:yes, once: yes}
 	return
 
 # Empty html element
@@ -86,3 +86,8 @@ _elementIndexOf= (element)->
 # MATH
 _min= Math.min
 _max= Math.max
+
+# Each element
+_each= (arr, cb)->
+	cb el for el in arr
+	return

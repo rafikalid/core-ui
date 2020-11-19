@@ -9,34 +9,31 @@
  * <div> loremIpsum </div>
 ###
 collapse: (event, args)->
-	if target= event.realTarget.nextSibling
-		targetClassList= target.classList
-		# cancel any active animation
-		anim.remove target
+	currentTarget= event.currentTarget
+	currentTargetClassList= currentTarget.classList
+	if targetDiv= currentTarget.nextSibling
+		targetDivOp= Core.op(targetDiv).stop()
 		# Collapse
 		switch args[1]
 			when 'in'
-				targetClassList.add 'active'
-				targetHeight= '100%'
+				currentTargetClassList.add 'active'
+				targetDivOp.slideDown()
 			when 'out'
-				targetClassList.add 'active'
-				targetHeight= 0
+				currentTargetClassList.remove 'active'
+				targetDivOp.slideDown()
 			when 'toggle'
-				if target.classList.toggle 'active'
-					targetHeight= '100%'
-				else
-					targetHeight= 0
+				targetDivOp.slideToggle currentTargetClassList.toggle('active')
 			else # Accordion
-				targetHeight= '100%'
+				# Slide down current targetDiv
+				isDown= currentTargetClassList.toggle('active')
+				targetDivOp.slideToggle isDown
 				# Hide other active accords
-				if parent= target.parentNode
-					for element in parent.querySelectorAll ':scope>.active' when element isnt target
+				if parent= targetDiv.parentNode
+					# select active elements
+					sibs= []
+					for element in parent.querySelectorAll ':scope>.active[d-click^=collapse]' when element isnt currentTarget
 						element.classList.remove 'active'
-						if sib= element.nextSibling
-							anim.remove sib
-							anime {targets: sib, height: 0}
-		# do open
-		anime
-			targets:	target
-			height:		targetHeight
+						sibs.push sib if sib= element.nextSibling
+					# Slide up
+					Core.op(sibs).slideUp()
 	return

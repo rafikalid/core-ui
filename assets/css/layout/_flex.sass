@@ -3,8 +3,6 @@
  */
 .flex
 	display: flex
-.inline-flex, .iflex
-	display: inline-flex
 
 // Flex and inline-flex options
 .f
@@ -20,16 +18,25 @@
 			display: flex
 	// Direction
 	&-row
+		display: flex
 		flex-direction: row
 	&-col
+		display: flex
 		flex-direction: column
 	&-center
+		display: flex
 		justify-content: center
 		align-items: center
 	&-xcenter
+		display: flex
 		justify-content: center
 	&-ycenter
+		display: flex
 		align-items: center
+
+// Inline flex
+.inline-flex, .iflex
+	display: inline-flex
 
 /********
  * Grow

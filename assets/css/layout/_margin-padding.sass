@@ -1,62 +1,32 @@
 /***********
  * MARGINS & padding
  */
-%margin, .margin
-	margin: 24px
+// %margin, .margin
+// 	margin: 24px
 %tiny-padding
-	padding: 6px 16px
+	padding: 5px 10px
 
-$marginPaddingSizes: (1: 1px, 2: 2px, 5: 5px, t: 10px, w: 60px, auto: auto)
-
+// {margin}{size}-{position}
 @each $property, $pName in (m: margin, p: padding)
-	// Main
-	.#{$property}
-		#{$pName}: 24px
-		// Sizes
-		@each $sub, $subv in $marginPaddingSizes
-			&-#{$sub}
-				#{$pName}: $subv
-
-	// margin on each side
-	@each $m, $sz in (t: top, r: right, b: bottom, l: left)
-		.#{$property}#{$m}
-			#{$pName}-#{$sz}: 24px
-			// Sizes
-			@each $sub, $subv in $marginPaddingSizes
-				&-#{$sub}
-					#{$pName}: $subv
-
-	// Margin horizontal
-	.#{$property}x
-		#{$pName}-left: 24px
-		#{$pName}-right: 24px
-		// Sizes
-		@each $sub, $subv in $marginPaddingSizes
-			&-#{$sub}
+	// Sizes: m, m1, m2, m5, m10, mt, mw, ma
+	@each $sub, $subv in ("": 1em, 1: 1px, 2: 2px, 5: 5px, 10: 10px, t: 5px 10px, w: 1em 2em, a: auto)
+		.#{$property}#{$sub}
+			#{$pName}: $subv
+			// margin on each side: m-t, m-r, m-l, m-b
+			@each $m, $sz in (t: top, r: right, b: bottom, l: left)
+				&-#{$m}
+					#{$pName}-#{$sz}: $subv
+			// Margin horizontal
+			&-x
 				#{$pName}-left: $subv
 				#{$pName}-right: $subv
-
-	// Vertical margin
-	.#{$property}y
-		#{$pName}-top: 24px
-		#{$pName}-bottom: 24px
-		// Sizes
-		@each $sub, $subv in $marginPaddingSizes
-			&-#{$sub}
+			// Vertical margin
+			&-y
 				#{$pName}-top: $subv
 				#{$pName}-bottom: $subv
-
-	// Margin end
-	.#{$property}e
-		#{$pName}-inline-end: 24px
-		// Sizes
-		@each $sub, $subv in $marginPaddingSizes
-			&-#{$sub}
+			// Margin end
+			&-e
 				#{$pName}-inline-end: $subv
-	// margin start
-	.#{$property}s
-		#{$pName}-inline-start: 24px
-		// Sizes
-		@each $sub, $subv in $marginPaddingSizes
-			&-#{$sub}
+			// margin start
+			&-s
 				#{$pName}-inline-start: $subv

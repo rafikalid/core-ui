@@ -1,0 +1,15 @@
+.menu
+	overflow: hidden
+	&>a, &>.link
+		@extend %tiny-padding
+		display: block
+		color: inherit
+		text-decoration: none
+		transition: all $animate-fast ease-in-out
+		white-space: nowrap
+		&:hover
+			color: $link-hover
+			text-indent: 10px
+		&.active
+			background: $menu-active-bg
+			color: $link-active
