@@ -17,7 +17,7 @@ _removeClasses= (element)->
 	i= 1
 	len= arguments.length
 	while i < len
-		classList.delete arguments[i]
+		classList.remove arguments[i]
 		++i
 	return
 _removeElementsClasses= (elements)->
@@ -26,7 +26,7 @@ _removeElementsClasses= (elements)->
 		classList= element.classList
 		i= 1
 		while i < len
-			classList.delete arguments[i]
+			classList.remove arguments[i]
 			++i
 	return
 

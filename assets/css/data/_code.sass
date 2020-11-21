@@ -1,7 +1,9 @@
 // /**
 //  * Code highlighter
 //  */
-// code
+pre.code
+	padding: 0
+	margin: 0
 // 	@extend %select
 // 	font-family: monospace
 // 	background: #334449
@@ -9,30 +11,41 @@
 // 	padding: 2px 5px
 // 	border-radius: 5px
 //
-// ol.code
-// 	@extend %select
-// 	white-space: pre-wrap
-// 	padding: 0 0 0 3em
-// 	list-style: none
-// 	background: #212121
-// 	color: #c6d6d7
-// 	counter-reset: code
-// 	font-family: monospace
-// 	line-height: 1.3
-// 	tab-size: 4
-// 	>li
-// 		background: #263238
-// 		padding: 2px 10px
-// 		counter-increment: code
-// 		// &:nth-child(odd)
-// 		// 	background: lighten(#263238, 3%)
-// 		&:hover
-// 			background: #334449
-// 			&:before
-// 				color: white
-// 		&:before
-// 			content: counter(code)
-// 			display: inline-block
-// 			width: 0
-// 			text-indent: -3em
-// 			color: #616161
+ol.code
+	@extend %select
+	white-space: pre-wrap
+	padding: 0 0 0 3em
+	list-style: none
+	background: lighten(#1d1f21, 5%)
+	color: #c6d6d7
+	counter-reset: code
+	font-family: monospace
+	line-height: 1.3
+	tab-size: 4
+	>li
+		background: #1d1f21
+		padding: 2px 10px
+		counter-increment: code
+		// &:nth-child(odd)
+		// 	background: lighten(#263238, 3%)
+		&:hover
+			background: #334449
+			&:before
+				color: white
+		&:before
+			content: counter(code)
+			display: inline-block
+			width: 0
+			text-indent: -3em
+			color: #616161
+
+code
+	display: inline-block
+	padding: 2px 4px
+	border-radius: $default-radius
+	color: white
+	background: #1d1f21
+	font-family: monospace
+	// font-size: .9em
+	&:hover
+		background: #334449

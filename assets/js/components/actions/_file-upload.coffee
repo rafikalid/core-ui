@@ -62,12 +62,12 @@ fileUploadChange: (event)->
 ###
 filePreview: do ->
 	# create preview for each file
-	_createPreview= (component, previewContainer, file)->
+	_createPreview= (component, input, previewContainer, file)->
 		# Preview
-		fContainer= component.fileRenderPreview file
+		fContainer= component.filePreviewRender file
 		# Convert to HTML element
 		fContainer= _toHTMLElement fContainer if typeof fContainer is 'string'
-		fContainer[FILE_LIST_SYMB]= file
+		fContainer[FILE_LIST_SYMB]= {file:file, input: input}
 		previewContainer.appendChild fContainer
 		# Load image preview
 		if file.type.startsWith('image/')
@@ -87,7 +87,7 @@ filePreview: do ->
 			# Add previews
 			if previewContainer
 				_emptyElement(previewContainer) unless input.multiple
-				_createPreview this, previewContainer, file for file in addedFiles
+				_createPreview this, input, previewContainer, file for file in addedFiles
 		# BACKGROUND PREVIEW
 		if (file= addedFiles[0]) and input.hasAttribute 'd-preview-bg'
 			# Get target element
@@ -133,4 +133,19 @@ filePreviewReset: (input)->
 			element= input.closest('.f-cntrl').querySelector '.bg-preview'
 		if element
 			element.style.removeProperty 'backgroundImage'
+	return
+
+# Remove file from preview list
+rmFile: (event, args)->
+	target= event.realTarget
+	while target
+		if obj= target[FILE_LIST_SYMB]
+			# Remove file
+			queue= obj.input[FILE_LIST_SYMB]
+			if ~(idx= queue.indexOf obj.file)
+				queue.splice idx, 1
+			# Remove from DOM
+			target.parentNode.removeChild target
+			break
+		target= target.parentElement
 	return

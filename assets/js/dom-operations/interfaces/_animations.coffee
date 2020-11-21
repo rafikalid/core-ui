@@ -31,10 +31,9 @@ slideToggle: (isDown)->
 			return
 	this # chain
 # Bounce
-bounce: ()->
+bounce: ->
 	anime
-		targets:	element
-		scale:		1.2
-		duration:	200
-		direction:	'alternate'
+		targets:	@_elements
+		scale:		[1, 1.1, 1]
+		duration:	300
 	this # chain

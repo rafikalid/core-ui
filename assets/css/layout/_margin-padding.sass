@@ -8,8 +8,50 @@
 
 // {margin}{size}-{position}
 @each $property, $pName in (m: margin, p: padding)
+	// margin tiny
+	.#{$property}t
+		#{$pName}: 5px 10px
+		&-t
+			#{$pName}-top: 5px
+		&-b
+			#{$pName}-bottom: 5px
+		&-l
+			#{$pName}-left: 10px
+		&-r
+			#{$pName}-right: 10px
+		&-x
+			#{$pName}-left: 10px
+			#{$pName}-right: 10px
+		&-y
+			#{$pName}-top: 5px
+			#{$pName}-bottom: 5px
+		&-e
+			#{$pName}-inline-end: 10px
+		&-s
+			#{$pName}-inline-start: 1px
+	// Margin wide
+	.#{$property}w
+		#{$pName}: 1em 2em
+		&-t
+			#{$pName}-top: 1em
+		&-b
+			#{$pName}-bottom: 1em
+		&-l
+			#{$pName}-left: 2em
+		&-r
+			#{$pName}-right: 2em
+		&-x
+			#{$pName}-left: 2em
+			#{$pName}-right: 2em
+		&-y
+			#{$pName}-top: 1em
+			#{$pName}-bottom: 1em
+		&-e
+			#{$pName}-inline-end: 2em
+		&-s
+			#{$pName}-inline-start: 1px
 	// Sizes: m, m1, m2, m5, m10, mt, mw, ma
-	@each $sub, $subv in ("": 1em, 1: 1px, 2: 2px, 5: 5px, 10: 10px, t: 5px 10px, w: 1em 2em, a: auto)
+	@each $sub, $subv in ("": 1em, 0: 0, 1: 1px, 2: 2px, 5: 5px, 10: 10px, a: auto)
 		.#{$property}#{$sub}
 			#{$pName}: $subv
 			// margin on each side: m-t, m-r, m-l, m-b

@@ -1,7 +1,9 @@
 if file.type.startsWith('image/')
-	.card.flat.loading
+	.card.ib.flat.w200px.r.m2.loading
+		span.close(d-click="rmFile") ×
 		.avatar.img
-		.truncate #{file.name}
+		.truncate.pt #{file.name}
 else
-	.card.flat
-		.truncate #{file.name}
+	.card.flat.iflex-y.m2
+		.truncate.pt.grow1 #{file.name}
+		span.btn.flat.danger.t-xl(d-click="rmFile") ×

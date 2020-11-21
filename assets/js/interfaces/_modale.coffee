@@ -31,8 +31,9 @@ modal: (html)->
 			target= event.target
 			if btn= target.closest('[d-value]')
 				res btn.getAttribute 'd-value'
-			else unless target.closest '.mini-container'
-				Core.bounce element.querySelector '.modal-body'
+			else unless target.closest '.modal-body'
+				if card= element.querySelector '.modal-body'
+					Core.op(card).bounce()
 			return
 		element.addEventListener 'click', _click, false
 		return

@@ -44,6 +44,7 @@ do ->
 	#==========================
 	```
 	#=include ../../tmp/components.js
+	#=include ../js-libs/**/*.js
 	```
 	#interface
 	window.Core= Core

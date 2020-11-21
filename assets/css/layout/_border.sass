@@ -1,4 +1,26 @@
+/***********
+ * BORDER
+ */
+.dashed
+	border-style: dashed
+.dotted
+	border-style: dotted
 
+/***********
+ * BORDER
+ */
 @each $pos, $posN in (t: top, r: right, b: bottom, l: left)
 	.b-#{$pos}
 		border-#{$posN}: 1px $border-color solid
+
+/***********
+ * CIRCLE
+ */
+.circle
+	border-radius: 50%
+	padding: 5px
+	width: 2.5em
+	height: 2.5em
+	display: inline-flex
+	justify-content: center
+	align-items: center

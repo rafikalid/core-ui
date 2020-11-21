@@ -17,16 +17,16 @@ a, .link
 		color: $link-active
 		text-decoration: underline
 	// &.hover
-	// 	&.primary:hover
-	// 		color: $primary
-	// 	&.success:hover
-	// 		color: $success
-	// 	&.info:hover
-	// 		color: $info
-	// 	&.warn:hover
-	// 		color: $warning
-	// 	&.danger:hover
-	// 		color: $danger
+	&.primary:hover
+		color: $primary
+	&.success:hover
+		color: $success
+	&.info:hover
+		color: $info
+	&.warn:hover
+		color: $warning
+	&.danger:hover
+		color: $danger
 
 	// &:not(.hover)
 	// 	&.default
@@ -64,3 +64,17 @@ a, .link
 	outline: none
 	&:hover
 		color: $link-hover
+
+.close
+	position: absolute
+	right: 5px
+	top: 5px
+	cursor: pointer
+	transition: color .3s ease
+	font-size: 24px
+	padding: 1px 4px
+	border-radius: 50%
+	background: #ffffff6e
+	&:hover
+		color: $danger
+		background: $default-bg

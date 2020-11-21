@@ -21,18 +21,20 @@ textarea
 	width: 100%
 	// apearence
 	border: $default-border
-	background-color: $border-color
+	background-color: $default-bg
 	border-radius: $btn-radius
 	color: $text-color
 	touch-action: manipulation
 	-webkit-appearance: none
 	outline: none
 	// height: 2.573rem
-	&:hover
+	&:hover, &:focus
 		background-color: $default-light
-	&:focus, &.has-popup
+	&:focus
+		border-color: $link-hover
+		// , &.has-popup
 		// background-color: $default-dark
-		background-color:  white
+		// background-color:  white
 	// &::selection
 	// 	background-color: $default-bg
 	// 	color: $black
