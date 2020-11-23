@@ -19,10 +19,10 @@ tabs: (event, args)->
 	currentTab= event.realTarget.closest '.tab'
 	return if (not currentTab) or currentTab.classList.contains 'active'
 	# Active tab
-	activeTab= tabsContainer.querySelector('.tab.active')
+	activeTab= tabsContainer.getElementsByClassName('tab active')[0]
 	# Check tabs are initialized
 	if tabsContainerClassList.contains 'tabs-enabled'
-		tabBar= tabsContainer.querySelector '.tabs-bar'
+		tabBar= tabsContainer.getElementsByClassName('tabs-bar')[0]
 	else
 		tabsContainerClassList.add 'tabs-enabled'
 		# add tab bar
@@ -30,12 +30,11 @@ tabs: (event, args)->
 		tabBar.className= 'tabs-bar'
 		# Apply style
 		if activeTab
-			barStyle= tabBar.style
-			barStyle.width= "#{activeTab.offsetWidth}px"
-			barStyle.left= "#{activeTab.offsetLeft}px"
+			tabBar.style.cssText= "width: #{activeTab.offsetWidth}px; left: #{activeTab.offsetLeft}px"
 		tabsContainer.appendChild tabBar
 	# Disactivate previous active tab
-	activeTab.classList.remove 'active' if activeTab
+	if activeTab
+		activeTab.classList.remove 'active'
 	# Enable clicked tab
 	currentTab.classList.add 'active'
 	# Get tab items
@@ -49,10 +48,5 @@ tabs: (event, args)->
 			if i is currentTabIndex then item.classList.add 'active'
 			else item.classList.remove 'active'
 	# Apply animation
-	anime.remove tabBar # stop previous animation
-	anime
-		targets:	tabBar
-		# duration:
-		width:		currentTab.offsetWidth
-		left:		currentTab.offsetLeft
+	tabBar.style.cssText= "width: #{currentTab.offsetWidth}px; left: #{currentTab.offsetLeft}px"	
 	return

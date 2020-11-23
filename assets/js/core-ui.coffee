@@ -22,6 +22,7 @@ do ->
 	#==========================
 	#=include body/**/_*.coffee
 	#=include dom-operations/_main.coffee
+	#=include components/form/**/_*.coffee
 
 	# Main object
 	#==========================

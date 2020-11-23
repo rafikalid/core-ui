@@ -8,6 +8,12 @@ modal: (html)->
 	_close= null
 	_closeWhenBack= null
 	element= null
+	# Keyboard listener
+	# _keyboardListener= (event)->
+	# 	k= event.keyCode
+	# 	if k is 27 then _close 'cancel'
+	# 	else console.log 'k>>', k
+	# 	return
 	# return promise
 	p= new Promise (res, rej)->
 		# close Fx
@@ -33,7 +39,7 @@ modal: (html)->
 				res btn.getAttribute 'd-value'
 			else unless target.closest '.modal-body'
 				if card= element.querySelector '.modal-body'
-					Core.op(card).bounce()
+					Core.op(card).buzzOut()
 			return
 		element.addEventListener 'click', _click, false
 		return

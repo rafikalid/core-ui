@@ -1,0 +1,18 @@
+input.hidden(type="range")&attributes(input)
+if icon
+	-var t= icon.repeat(input.max - input.min);
+	.input-range.input-rating(d-click="select")
+		.t-light !{t}
+		.abs.track(style=`width: ${input.track}%`) !{t}
+		//- .hidden.abs !{t}
+else
+	.input-range.progress.sm(d-click="select")
+		.track(style=`width: ${input.track}%`)
+		//- Steps
+		if input.step > 0
+			-var p= Math.round((input.max - input.min) / input.step);
+			-p= 100/p;
+			-var st= p
+			while st < 100
+				i.step(style=`left: ${st}%`)
+				-st+= p;

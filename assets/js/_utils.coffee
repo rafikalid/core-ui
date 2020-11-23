@@ -11,25 +11,6 @@ _defineProperties=			Object.defineProperties
 ###* ARRAY ###
 _isArray= Array.isArray
 
-###* Remove classes ###
-_removeClasses= (element)->
-	classList= element.classList
-	i= 1
-	len= arguments.length
-	while i < len
-		classList.remove arguments[i]
-		++i
-	return
-_removeElementsClasses= (elements)->
-	len= arguments.length
-	for element in elements
-		classList= element.classList
-		i= 1
-		while i < len
-			classList.remove arguments[i]
-			++i
-	return
-
 # Get base URL
 _getBaseURLValue= null
 _getBaseURL= ->
@@ -91,3 +72,11 @@ _max= Math.max
 _each= (arr, cb)->
 	cb el for el in arr
 	return
+
+# Parsers
+_int= (value, defaultValue)->
+	value= parseInt value
+	return if isNaN value then defaultValue else value
+_float= (value, defaultValue)->
+	value= parseFloat value
+	return if isNaN value then defaultValue else value

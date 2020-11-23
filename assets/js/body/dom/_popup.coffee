@@ -3,19 +3,18 @@
  * @param {String}	y	-	'right'
  * @param {String}	popupW	-	'width' or 'height'
  *
- * @example	_popupPositionCalc(elementRect, 'top', 'bottom', 'right', popupRect, 'width', 'height', margin);
+ * @example	_popupPositionCalc('top', 'bottom', null, 'width', 'height', element, popup, elementRect, popupRect, 0);
 ###
-_popupPositionCalc= (x, xAlt, y, popupY, popupX, element, popup, elementRect, popupRect, margin)->
+_popupPositionCalc= (x, xAlt, y, popupX, popupY, element, popup, elementRect, popupRect, margin)->
 	# result
 	result=
-		position:	"#{x}-#{y}"
+		position:	null
 		top:		null
 		bottom:		null
 		left:		null
 		right:		null
 		width:		null
 		height:		null
-	w= result[popupX]= @size (if popupX is 'width' then innerWidth else innerHeight), popupRect[popupX], elementRect[popupX]
 	# Cacl
 	mainSpace= elementRect[x]
 	altSpace= elementRect[xAlt]
@@ -29,25 +28,33 @@ _popupPositionCalc= (x, xAlt, y, popupY, popupX, element, popup, elementRect, po
 		top= 0
 	else
 		availableSpace= altSpace - margin
-		size= _min popupSize, availableSpace
-		topAlt= availableSpace - size
+		if popupSize <= availableSpace
+			topAlt= availableSpace - popupSize
+		else
+			size=	availableSpace
+			topAlt=	0
 		isAlterred= yes
 	# Position
 	pos= if isAlterred then xAlt else x
-	result.position= if y then "#{pos}#{y.charAt(0).toUpperCase()}#{y.substr(1)}" else pos
+	result.position= if y then "#{pos}-#{y}" else pos
 	result[x]= top
 	result[xAlt]= topAlt
 	result[popupY]= size
 	# x axe
-	left= w - elementRect[popupX]
-	left /= 2 unless y
-	left= elementRect[y] - left
+	w= result[popupX]= @size (if popupX is 'width' then innerWidth else innerHeight), popupRect[popupX], elementRect[popupX]
+	left= w - elementRect[popupX] # calc popupWidth - elementWidth
+	if y
+		ay= y
+	else
+		ay= if popupX is 'width' then 'left' else 'top'
+	# Set
+	left= elementRect[ay] - left
 	left= 0 if left < 0
-	result[y]= left
+	result[ay]= left
 	return result
 
 ### PREDIFINED POSITIONS ###
-_POPUP_POS= ['top', 'right', 'bottom', 'left']
+_POPUP_POS= ['top', 'right', 'bottom', 'left', 'width', 'height']
 _POPUP_POSITIONS=
 	# TOP
 	topLeft:	['top', 'bottom', 'left', 'width', 'height']
@@ -59,11 +66,11 @@ _POPUP_POSITIONS=
 	bottomRight:['bottom', 'top', 'right', 'width', 'height']
 	# LEFT
 	leftTop:	['left', 'right', 'top', 'height', 'width']
-	left:		['left', 'right', null, 'height', 'width']
+	left:		['left', 'right', 0, 'height', 'width']
 	leftBottom:	['left', 'right', 'bottom', 'height', 'width']
 	# RIGHT
 	rightTop:	['right', 'left', 'top', 'height', 'width']
-	right:		['right', 'left', null, 'height', 'width']
+	right:		['right', 'left', 0, 'height', 'width']
 	rightBottom:['right', 'left', 'bottom', 'height', 'width']
 
 ### PREDIFINED POSITIONS ###
@@ -94,8 +101,8 @@ _POPUP_ANIM= # [translateX, translateY]
  * @param {HTMLElement}	options.element		- target html element
  * @param {HTMLElement}	options.popup		- popup container
  * @param {Number}		options.margin		- Margin between popup and the element, @default 0
- * @param {Boolean}		options.float		- Change popup position when mission space
- * @param {Boolean}		options.mobile		- Show pupup in full screen for mobiles
+ * @param {Boolean}		options.float		- Change popup position when mission space @default true
+ * @param {Boolean}		options.mobile		- Show pupup in full screen for mobiles @default true
  * @param {String}		options.position	- Popup position: top, top-right, right, bottom-right, bottom, bottom-left, left, top-left
  * @param {Function}	options.position	- Set your position logic
  * @example		options.position= function(element, popup, elementRect){ @setPosition(top, left, width, height) }
@@ -119,11 +126,15 @@ class _Popup
 		@_float=	options.float isnt false	# if moving the popup depending on the available space
 		@_mobile=	options.mobile isnt false	# show popup in full screen when mobile device
 		@_isOpen=	no
+		@_onOpening=	options.onOpening	# Callback when start opening
+		@_onOpen=		options.onOpen		# Callback when open
+		@_onClosing=	options.onClosing	# Callback when start closing
+		@_onClose=		options.onClose		# Callback when close
 		# Position
 		position= options.position
 		if typeof position is 'function'
 			@_position=	position
-		else if position= _POPUP_POSITIONS[position]
+		else if position= _POPUP_POSITIONS[position or 'bottom']
 			# (element, popup, elementRect, popupRect, margin)->
 			@_position= _popupPositionCalc.bind(this, position[0], position[1], position[2], position[3], position[4]);
 		else
@@ -151,59 +162,99 @@ class _Popup
 	open: ->
 		@_isOpen= yes
 		# Show popup
-		popupDiv= @_popup
-		popupDiv.classList.remove 'hidden'
+		# popupDiv= @_popup
+		# popupDiv.classList.remove 'hidden'
 		# Adjust position
-		@adjust()
-		# Close listeners
-		document.addEventListener 'keyup', @_closeEsc, {capture: no, passive: yes}
-		document.addEventListener 'click', @_closeOutsideListener, {capture: yes, passive: yes}
-		window.addEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
+		await @adjust()
+		# listener
+		currentPos= @_currentPos
+		@_onOpening?(currentPos, this)
 		# Apply animation
-		anime.remove popupDiv
-		animB= _POPUP_ANIM[@_currentPos] or _POPUP_ANIM.top
-		anime
-			targets: popupDiv
+		animB= _POPUP_ANIM[currentPos] or _POPUP_ANIM.top
+		await Core.op(@_popup).stop().animate({
 			opacity: [0.5, 1]
-			translateX:	[animB[0], 0]
-			translateY:	[animB[1], 0]
-		this # chain
+			transform: [
+				"translateX(#{animB[0]}px) translateY(#{animB[1]}px)"
+				""
+			]
+		}).finished
+		# Close listeners
+		if @_isOpen
+			document.addEventListener 'keyup', @_closeEscListener, {capture: no, passive: yes}
+			document.addEventListener 'click', @_closeOutsideListener, {capture: yes, passive: yes}
+			window.addEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
+			@_onOpen?(currentPos, this)
+		return # chain
 	###* Close popup ###
 	close: ->
-		# # TODO: animation
-		@_popup.classList.add 'hidden'
 		@_isOpen= no
-		# Close listeners
-		document.removeEventListener 'keyup', @_closeEsc, {capture: no, passive: yes}
+		# Remove listeners
+		document.removeEventListener 'keyup', @_closeEscListener, {capture: no, passive: yes}
 		document.removeEventListener 'click', @_closeOutsideListener, {capture: yes, passive: yes}
 		window.removeEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
+		# animation
+		currentPos= @_currentPos
+		@_onClosing?(currentPos, this)
+		animB= _POPUP_ANIM[currentPos] or _POPUP_ANIM.top
+		await Core.op(@_popup).stop().animate({
+			opacity: [1, 0.5]
+			transform: ["", "translateX(#{animB[0]}px) translateY(#{animB[1]}px)"]
+			}).finished
+		unless @_isOpen
+			@_popup.classList.add 'hidden'
+			@_onClose?(currentPos, this)
 		return
+	###* toggle ###
+	toggle: (doOpen)->
+		doOpen ?= !@_isOpen
+		if doOpen
+			@open()
+		else
+			@close()
+		this # chain
 	###* Adjust popup position ###
 	adjust: ->
 		element= @_element
-		elementRect= element.getBoundingClientRect()
-		# if mobile
-		popupStyle= @_popup.style
-		if @_mobile and innerWidth <= MOBILE_WIDTH
-			popupStyle.top= popupStyle.left= 0
-			popupStyle.width= popupStyle.height= '100%'
-		# Large screen
-		else
-			# Clear popup style
-			popupStyle.removeProperty('top')
-			popupStyle.removeProperty('left')
-			popupStyle.removeProperty('width')
-			popupStyle.removeProperty('height')
-			# Calc position
-			stl= @_position element, @_popup, elementRect, {width:popup.offsetWidth, height: popup.offsetHeight}, @_margin
-			# Adjust popup
-			@_currentPos= stl.position or 'top'
-			popupStyle[k]= v for k in _POPUP_POS when v= stl[k]
-		return this # chain
+		popupDiv= @_popup
+		self= this
+		return new Promise (res, rej)->
+			requestAnimationFrame ->
+				try
+					elCl= popupDiv.classList
+					if isHidden= elCl.contains 'hidden'
+						elCl.remove 'hidden'
+						elementRect= element.getBoundingClientRect()
+						elementRect=
+							width:	elementRect.width
+							height:	elementRect.height
+							top:	elementRect.top
+							left:	elementRect.left
+							right:	innerWidth - elementRect.right
+							bottom:	innerHeight - elementRect.bottom
+						# if mobile
+						if self._mobile and innerWidth <= MOBILE_WIDTH
+							popupDiv.style.cssText= ""
+							# Large screen
+						else
+							# Calc position
+							stl= self._position element, popupDiv, elementRect, {width:popupDiv.offsetWidth, height: popupDiv.offsetHeight}, self._margin
+							# Adjust popup
+							self._currentPos= stl.position or 'top'
+							arr= []
+							arr.push "#{k}: #{v}px" for k in _POPUP_POS when (v= stl[k])?
+							popupDiv.style.cssText= arr.join ';'
+							# hide element if it is
+							# elCl.add 'hidden' if isHidden
+					res()
+				catch error
+					rej error
+				return
+			return
 
 	###* Clac popup width or height ###
 	size: (availableSize, popupW, elementW)->
-		Math.min(availableSize, Math.max(popupW, elementW))
+		v= if popupW < elementW then elementW else popupW # max
+		return if v < availableSize then v else availableSize # min
 
 	###* Clac popup height ###
 	height: (availableHeight, popupHeight, elementHeight)->

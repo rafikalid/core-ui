@@ -1,7 +1,28 @@
 # Stop active animations
 stop: ()->
-	anime.remove @_elements
+	try
+		for element in @_elements
+			anim.finish() for anim in element.getAnimations()
+	catch error
+		Core.fatalError 'ANIMATION', error
 	this # chain
+# Animate
+animate: (keyframes, options)->
+	try
+		elements= @_elements
+		options= _assign {duration: Core.ANIM_FAST, easing: 'ease', fill: 'forwards'}, options
+		if elements.length is 1
+			result= elements[0].animate keyframes, options
+		else
+			result= []
+			for element in @_elements
+				result.push element.animate keyframes, options
+			result= new _AnimWrapper(result)
+	catch error
+		Core.fatalError 'ANIMATION', error
+	return result
+
+
 # Slide down
 slideDown: ()->
 	_each @_elements, _slideDown
@@ -30,10 +51,18 @@ slideToggle: (isDown)->
 				_slideUp element
 			return
 	this # chain
-# Bounce
-bounce: ->
-	anime
-		targets:	@_elements
-		scale:		[1, 1.1, 1]
-		duration:	300
-	this # chain
+
+# buzzOut
+buzzOut: (options)->
+	@animate [
+		{transform: 'translateX(3px) rotate(2deg)', offset: 0.1}
+		{transform: 'translateX(-3px) rotate(-2deg)', offset: 0.2}
+		{transform: 'translateX(3px) rotate(2deg)', offset: 0.3}
+		{transform: 'translateX(-3px) rotate(-2deg)', offset: 0.4}
+		{transform: 'translateX(2px) rotate(1deg)', offset: 0.5}
+		{transform: 'translateX(-2px) rotate(-1deg)', offset: 0.6}
+		{transform: 'translateX(2px) rotate(1deg)', offset: 0.7}
+		{transform: 'translateX(-2px) rotate(-1deg)', offset: 0.8}
+		{transform: 'translateX(1px) rotate(0)', offset: 0.9}
+		{transform: 'translateX(-1px) rotate(0)', offset: 1}
+		], options

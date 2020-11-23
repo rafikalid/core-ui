@@ -4,40 +4,47 @@
  */
 .avatar
 	display: inline-block
-	width: 200px
-	height: 204px
+	width: 249px
+	height: 256px
 	background: center no-repeat
 	background-size: cover
+	&.xl
+		width: 997px
+		height: 1024px
+	&.lg
+		width: 498px
+		height: 512px
 	&.md
-		width: 150px
-		height: 154px
+		width: 125px
+		height: 128px
 	&.sm
 		width: 62px
 		height: 64px
 	&.xs
-		width: 30px
+		width: 31px
 		height: 32px
 
-%square-avatar
-	display: inline-block
-	background: #eee center no-repeat
-	background-size: cover
-.square
-	&-512
-		@extend %square-avatar
-		width: 512px
-		height: 512px
-	&-256
-		@extend %square-avatar
-		width: 256px
-		height: 256px
-	&-64
-		@extend %square-avatar
-		width: 64px
-		height: 64px
+// %square-avatar
+// 	display: inline-block
+// 	background: #eee center no-repeat
+// 	background-size: cover
+// .square
+// 	&-512
+// 		@extend %square-avatar
+// 		width: 512px
+// 		height: 512px
+// 	&-256
+// 		@extend %square-avatar
+// 		width: 256px
+// 		height: 256px
+// 	&-64
+// 		@extend %square-avatar
+// 		width: 64px
+// 		height: 64px
 
 
 // .figure: image doesnt exeed 100%
 .figure
-	max-width: 100%
-	object-fit: contain
+	display: inline-block
+	margin: 5px
+	text-align: center

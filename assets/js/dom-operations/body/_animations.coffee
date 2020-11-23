@@ -30,3 +30,14 @@ _slideUp= (element, options)->
 	_assign args, options if options
 	anime args
 	return
+
+# Animations wrapper
+class _AnimWrapper
+	constructor: (animations)->
+		@_a= animations
+		return
+	```
+	get length(){return this._a.length}
+	get currentTime(){return this._a.currentTime}
+	get finished(){ return Promise.all(this._a.map((a)=> a.finished)) }
+	```

@@ -8,6 +8,8 @@ h: height
 b: border
 g: group
 
+i-:	Init
+	i-img: init image
 t-:	text
 h-: hidden (display none)
 v-: visible

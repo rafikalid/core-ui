@@ -1,10 +1,23 @@
 hr
-	margin-top: 1rem
-	margin-bottom: 1rem
-	border: none
-	border-top: 1px solid $border-color
+	margin: 1rem 0
+	color: $border-color
+	// border-top: 1px solid $border-color
+	border-top: 1px solid currentColor
 
-.divider
-	border: 1px $border-color none
-	&:not(:last-child)
-		border-bottom-style: solid
+.hr
+	margin: 1rem 0
+	color: $border-color
+	&:empty
+		border-top: 1px currentColor solid
+	&:not(:empty)
+		display: flex
+		align-items: center
+		&:before, &:after
+			content: ''
+			flex-grow: 1
+			border-top: 1px solid currentColor
+			height: 0
+		&:before
+			margin-inline-end: 1em
+		&:after
+			margin-inline-start: 1em
