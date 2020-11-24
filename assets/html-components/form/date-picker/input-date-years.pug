@@ -1,0 +1,5 @@
+.input-date-view.grow1.grid.grid-c.xs4.pt
+	-var i=0, startYear= attrs.currentDate.getFullYear() - 5;
+	while i < 12
+		-++i
+		.btn.flat(d-click='select '+startYear) #{startYear++}

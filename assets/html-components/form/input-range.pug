@@ -1,10 +1,10 @@
-input.hidden(type="range")&attributes(locals)
+input.hidden(type="range")&attributes(input)
 .input-range.progress.sm(d-click="select")
-	.track(style=`width: ${track}%`)
+	.track(style=`width: ${attrs.track}%`)
 		.caret(d-move="drag" d-movestart="drag" d-moveend="drag")
 	//- Steps
-	if step > 0
-		-var p= Math.round((max-min)/step);
+	if attrs.step > 0
+		-var p= Math.round((attrs.max-attrs.min)/attrs.step);
 		-p= 100/p;
 		-var st= p
 		while st<100

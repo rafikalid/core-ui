@@ -1,0 +1,6 @@
+.input-date-view.grow1.grid.grid-c.xs2.pt
+	-var i=0, startYear= attrs.currentDate.getFullYear() - 53; // - 5 - 12*4
+	while i < 8
+		-++i
+		.btn.ouline(d-click='select '+(startYear+5)) #{startYear} - #{startYear+=11}
+		-++startYear;

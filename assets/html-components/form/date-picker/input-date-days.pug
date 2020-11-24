@@ -1,0 +1,24 @@
+-var i, days, startDay, cDate, lastDay, today;
+.input-date-view.grow1.grid.xs7.grid-c.pt
+	//- Header
+	-i= 0, days= i18n.days;
+	-while(i<7)
+		b #{days[i++]}
+	//- Body
+	-cDate= new Date(attrs.currentDate);
+	-today= cDate.getDate()
+	//- get this month last day
+	-cDate.setDate(1);
+	-startDay= cDate.getDay()+1;
+	//- Get last day
+	-cDate.setDate(35);
+	-cDate.setDate(0);
+	-lastDay= cDate.getDate();
+	//- First days of month
+	.btn.flat(style='grid-column-start:'+startDay d-click="select 1") 1
+	//- -lastOfLastWeek= lastDay-cDate.getDay()
+	-i= 2;
+	while i <= lastDay
+		.btn.flat(d-click="select "+i) #{i++}
+		
+			

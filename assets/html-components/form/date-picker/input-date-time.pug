@@ -1,0 +1,82 @@
+-var currentDate= attrs.currentDate, patterns= attrs.pattern.patterns;
+//- Check pattern for format to show
+-
+	var showHours, showMinutes, showSeconds, showMilliseconds, showAmPm, i, len, hasPrev= false;
+	len= patterns.length;
+	for(i=0; i < len; i++)
+		switch(patterns[i]){
+			case 'h':
+			case 'hh':
+				showHours= showAmPm= true; break;
+			case 'H':
+			case 'HH':
+				showHours= true; break;
+			case 'i':
+			case 'ii':
+				showMinutes= true; break;
+			case 's':
+			case 'ss':
+				showSeconds= true; break;
+			case 'S':
+			case 'SS':
+			case 'SSS':
+				showMilliseconds= true; break;
+		}
+
+//- Show
+-
+	var hours= currentDate.getHours(), tt, minHour= 0, maxHour= 23;
+	if(showAmPm){
+		minHour= 1
+		maxHour= 12
+		if(hours < 12){
+			tt= 'AM'
+			if(hours===0) hours= 12
+		} else{
+			tt= 'PM'
+			if(hours>12) hours-= 12
+		}
+	}
+form.input-date-view.grow1.f-col(v-submit="selectValue")
+	.grow1.f-c.pt
+		if showHours
+			-hasPrev= true;
+			.gv.f-cntrl
+				.btn.flat(d-click="inc 1") ⮝
+				input.f-input.w40px.t-center(type="number" name="h" value=hours min=minHour max=maxHour d-loop d-select tabindex="1")
+				.btn.flat(d-click="inc -1") ⮟
+		if showMinutes
+			if hasPrev
+				|  : 
+			else
+				-hasPrev= true;
+			.gv.f-cntrl
+				.btn.flat(d-click="inc 1") ⮝
+				input.f-input.w40px.t-center(type="number" name="i" value=currentDate.getMinutes() max="59" min="0" d-loop d-select tabindex="1")
+				.btn.flat(d-click="inc -1") ⮟
+		if showSeconds
+			if hasPrev
+				|  : 
+			else
+				-hasPrev= true;
+			.gv.f-cntrl
+				.btn.flat(d-click="inc 1") ⮝
+				input.f-input.w40px.t-center(type="number" name="s" value=currentDate.getSeconds() max="59" min="0" d-loop d-select tabindex="1")
+				.btn.flat(d-click="inc -1") ⮟
+		if showMilliseconds
+			if hasPrev
+				|  : 
+			else
+				-hasPrev= true;
+			.gv.f-cntrl
+				.btn.flat(d-click="inc 1") ⮝
+				input.f-input.w40px.t-center(type="number" name="ms" value=currentDate.getMilliseconds() max="99" min="0" d-loop placeholder="ss" d-select tabindex="1")
+				.btn.flat(d-click="inc -1") ⮟
+		if showAmPm
+			.f-cntrl
+				input(type="hidden" name="tt" value=tt)
+				.btn.flat(d-click="toggleTT") !{tt}
+	//- buttons
+	.t-end.p5
+		input.btn.primary(type="submit" value=i18n.ok)
+				

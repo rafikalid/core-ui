@@ -16,7 +16,7 @@ dropdown: (event, args)->
 			popupG= dropDownBtn[DROPDOWN_SYMB]= new _Popup
 				element:	dropDownBtn
 				popup:		dropDownPopup
-				onOpen:		(pos, pop)->
+				onOpening:	(pos, pop)->
 					dropDownBtn.classList.add 'active', 'caret-' + pos.split('-')[0]
 					return
 				onClose:	(pos, pop)->

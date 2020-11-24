@@ -1,0 +1,5 @@
+.input-date-view.grow1.grid.grid-c.xs4.pt
+	-var i=0, months= i18n.months;
+	-var currentMonth= attrs.currentDate.getMonth()
+	while i < 12
+		.btn.flat(d-click='select '+i) #{months[i++]}

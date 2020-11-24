@@ -1,0 +1,16 @@
+input.hidden(type="hidden")&attributes(input)
+//- header
+-var CoreHTML= Core.html;
+|!{CoreHTML.inputDateHeader(locals)}
+	
+//- Body
+case attrs.currentView.name
+	when 'time'
+		|!{CoreHTML.inputDateTime(locals)}
+	when 'days'
+		|!{CoreHTML.inputDateDays(locals)}
+	when 'months'
+		|!{CoreHTML.inputDateMonths(locals)}
+	default
+		|!{CoreHTML.inputDateYears(locals)}
+	

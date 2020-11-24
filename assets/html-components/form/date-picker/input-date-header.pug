@@ -1,0 +1,14 @@
+.header.shrink0.f-y.pt
+	.grow1.pw.truncate.t-center(d-click="go up")
+		-var currentDate= attrs.currentDate;
+		-var year= currentDate.getFullYear();
+		case attrs.currentView.name
+			when 'g-years'
+				|!{year-53} - !{year+42}
+			when 'years'
+				|!{year-5} - !{year+6}
+			default
+				|#{attrs.currentView.pattern.format(currentDate)}
+	.g
+		span.btn(d-click="go prev") 🡄
+		span.btn(d-click="go next") 🡆

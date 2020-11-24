@@ -80,3 +80,14 @@ _int= (value, defaultValue)->
 _float= (value, defaultValue)->
 	value= parseFloat value
 	return if isNaN value then defaultValue else value
+
+###* Convert date to timestamp ###
+_toTimeStamp= (date, defaultV)->
+	return defaultV unless date
+	dateV= new Date date
+	if isNaN dateV.getDate()
+		dateV= parseInt date
+		return defaultV if isNaN dateV
+		dateV= new Date dateV
+		return defaultV if isNaN dateV.getDate()
+	return dateV.getTime()

@@ -22,20 +22,17 @@ Component.defineInit 'input-rating', class InputRating extends InputRange
 		element.classList.add c if c= @_currentState
 		return
 	###* Get component html ###
-	_getHTML: -> Core.html.inputRating {input: @_attrs, icon: @_icon, state: @_currentState}
+	_getHTML: ->
+		attrs= @_attrs
+		inputAttrs= _assign {}, @_attributes
+		inputAttrs.value= attrs.value
+		inputAttrs.min= attrs.min
+		inputAttrs.max= attrs.max
+		Core.html.inputRating {input: inputAttrs, attrs: attrs, icon: @_icon, state: @_currentState}
 	###* @private Get attributes ###
 	_loadAttributes: ->
-		element= @element
-		value= _float element.getAttribute('value'), 0
-		@_attrs=
-			name:	element.getAttribute('name')
-			min:	_float element.getAttribute('min'), 0
-			max:	_float element.getAttribute('max'), 5
-			value:			value
-			tmpValue:		value	# temp value when draging
-			defaultValue:	value
-			step:	_float element.getAttribute('step'), null
-			_bound: null # "progress" bound, use when drag
+		super._loadAttributes()
+		@_attrs.max= _float @_attributes.max, 5
 		return
 	###* Fix values ###
 	_fixValues: ->

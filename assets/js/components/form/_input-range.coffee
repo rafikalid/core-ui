@@ -1,55 +1,44 @@
 ###*
  * INPUT RANGE
 ###
-Component.defineInit 'input-range', class InputRange extends Component
-	constructor: (element)->
-		super element
-		@_raf= null # requestAnimationFrame id
-		return
-	###* Render component ###
-	setElement: (element)->
-		# Call super method
-		super.setElement element
-		# Load attributes
-		@_loadAttributes()
-		# Reload HTML
-		@_reload()
-		this # chain
+Component.defineInit 'input-range', class InputRange extends InputAbstract
 	###* @private Get attributes ###
 	_loadAttributes: ->
-		element= @element
-		value= _float element.getAttribute('value'), 0
+		attributes= @_attributes= @_getAttributes()
+		value= _float attributes.value, 0
 		@_attrs=
-			name:	element.getAttribute('name')
-			min:	_float element.getAttribute('min'), 0
-			max:	_float element.getAttribute('max'), 100
 			value:			value
 			tmpValue:		value	# temp value when draging
-			defaultValue:	value
-			step:	_float element.getAttribute('step'), null
-			_bound: null # "progress" bound, use when drag
+			readonly:		!!attributes.readonly
+			#
+			min:			_float attributes.min, 0
+			max:			_float attributes.max, 100
+			step:			_float attributes.step, null
+			_bound: 		null # "progress" bound, use when drag
 		return
 	###* @private Reload component html ###
-	_reload: ->
+	reload: ->
 		# Check values
 		@_fixValues()
 		# render HTML
 		requestAnimationFrame (t)=>
 			@element.innerHTML= @_getHTML()
+			@_getInput[INPUT_COMPONENT_SYMB]= this # link hidden input to this component
 			return
 		return
 	###* Get component html ###
-	_getHTML: -> Core.html.inputRange @_attrs
+	_getHTML: ->
+		attrs= @_attrs
+		inputAttrs= _assign {}, @_attributes
+		inputAttrs.value= attrs.value
+		inputAttrs.min= attrs.min
+		inputAttrs.max= attrs.max
+		Core.html.inputRange input: inputAttrs, attrs: attrs
 
 	### GETTERS ###
 	```
-	get name(){return this._attrs.name; }
-	get min(){return this._attrs.min; }
-	get max(){return this._attrs.max; }
-	get value(){return this._attrs.value; }
 	get step(){return this._attrs.step; }
 	get tmpValue(){return this._attrs.tmpValue; }
-	get defaultValue(){return this._attrs.defaultValue; }
 	```
 	###* Set value ###
 	```
@@ -69,30 +58,13 @@ Component.defineInit 'input-range', class InputRange extends Component
 			self.emit('change');
 		});
 	}
-	set name(v){
-		this._attrs.name= v;
-		this._getInput().name= v;
-	}
-	set min(v){
-		var attrs= this._attrs;
-		attrs.min= v;
-		this._getInput().min= v;
-		this.value= attrs.value;
-	}
-	set max(v){
-		var attrs= this._attrs;
-		attrs.max= v;
-		this._getInput().max= v;
-		this.value= attrs.value;
-	}
 	set step(v){
 		var attrs= this._attrs;
 		attrs.step= v;
-		this._reload();
+		this.reload();
 	}
 	```
-	###* get internal input ###
-	_getInput: -> this.element.getElementsByTagName('input')[0]
+	###* get track ###
 	_setTrackWidth: (w)->
 		@element.getElementsByClassName('track')[0].style.width= w+'%'
 		return
@@ -108,6 +80,7 @@ Component.defineInit 'input-range', class InputRange extends Component
 
 	###* when click on the track: select value ###
 	select: (event, args)->
+		return if @_attrs.readonly # do not exec if readonly
 		target= event.currentTarget
 		bound= target.getBoundingClientRect()
 		p= Math.round((event.x - bound.left) * 100 / (bound.width or 1))
@@ -139,6 +112,7 @@ Component.defineInit 'input-range', class InputRange extends Component
 		return
 	# Drag
 	drag: (event, args)->
+		return if @_attrs.readonly # do not exec if readonly
 		target= event.realTarget
 		attrs= @_attrs
 		element= @element
