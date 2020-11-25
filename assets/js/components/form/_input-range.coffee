@@ -4,7 +4,12 @@
 Component.defineInit 'input-range', class InputRange extends InputAbstract
 	###* @private Get attributes ###
 	_loadAttributes: ->
-		attributes= @_attributes= @_getAttributes()
+		@_setAttributes @_getAttributes()
+		return
+	###* @private Set attributes ###
+	_setAttributes: (attributes)->
+		@_attributes= attributes
+		# attributes
 		value= _float attributes.value, 0
 		@_attrs=
 			value:			value
@@ -113,12 +118,11 @@ Component.defineInit 'input-range', class InputRange extends InputAbstract
 	# Drag
 	drag: (event, args)->
 		return if @_attrs.readonly # do not exec if readonly
-		target= event.realTarget
 		attrs= @_attrs
 		element= @element
 		switch event.type
 			when 'movestart'
-				attrs._bound= target.closest('.progress').getBoundingClientRect()
+				attrs._bound= event.currentTarget.getBoundingClientRect()
 				element.classList.add 'no-anim'
 			when 'move'
 				self= this

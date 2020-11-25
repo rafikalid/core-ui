@@ -4,7 +4,7 @@ pug_html = pug_html + "\u003Cdiv class=\"card ib flat w200px r m2 loading\"\u003
 }
 else {
 pug_html = pug_html + "\u003Cdiv class=\"card flat iflex-y m2\"\u003E\u003Cdiv class=\"truncate pt grow1\"\u003E" + (pug.escape(null == (pug_interp = file.name) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E\u003Cspan class=\"btn flat danger t-xl\" d-click=\"rmFile\"\u003E×\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
-}}.call(this,"file" in locals_for_with?locals_for_with.file:typeof file!=="undefined"?file:undefined));;return pug_html;},inputRange:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (Math, attrs, input) {pug_html = pug_html + "\u003Cinput" + (pug.attrs(pug.merge([{"class": "hidden","type": "range"},input]), false)) + "\u002F\u003E\u003Cdiv class=\"input-range progress sm\" d-click=\"select\"\u003E\u003Cdiv" + (" class=\"track\""+pug.attr("style", pug.style(`width: ${attrs.track}%`), true, false)) + "\u003E\u003Cdiv class=\"caret\" d-move=\"drag\" d-movestart=\"drag\" d-moveend=\"drag\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
+}}.call(this,"file" in locals_for_with?locals_for_with.file:typeof file!=="undefined"?file:undefined));;return pug_html;},inputRange:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (Math, attrs, input) {pug_html = pug_html + "\u003Cinput" + (pug.attrs(pug.merge([{"class": "hidden","type": "range"},input]), false)) + "\u002F\u003E\u003Cdiv class=\"input-range progress sm\" d-click=\"select\" d-move=\"drag\" d-movestart=\"drag\" d-moveend=\"drag\"\u003E\u003Cdiv" + (" class=\"track\""+pug.attr("style", pug.style(`width: ${attrs.track}%`), true, false)) + "\u003E\u003Cdiv class=\"caret\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
 if (attrs.step > 0) {
 var p= Math.round((attrs.max-attrs.min)/attrs.step);
 p= 100/p;
@@ -17,10 +17,10 @@ st+= p;
 pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"Math" in locals_for_with?locals_for_with.Math:typeof Math!=="undefined"?Math:undefined,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined,"input" in locals_for_with?locals_for_with.input:typeof input!=="undefined"?input:undefined));;return pug_html;},inputRating:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (Math, attrs, icon, input) {pug_html = pug_html + "\u003Cinput" + (pug.attrs(pug.merge([{"class": "hidden","type": "range"},input]), false)) + "\u002F\u003E";
 if (icon) {
 var t= icon.repeat(attrs.max - attrs.min);
-pug_html = pug_html + "\u003Cdiv class=\"input-range input-rating\" d-click=\"select\"\u003E\u003Cdiv class=\"t-light\"\u003E" + (null == (pug_interp = t) ? "" : pug_interp) + "\u003C\u002Fdiv\u003E\u003Cdiv" + (" class=\"abs track\""+pug.attr("style", pug.style(`width: ${attrs.track}%`), true, false)) + "\u003E" + (null == (pug_interp = t) ? "" : pug_interp) + "\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"input-range input-rating\" d-click=\"select\" d-move=\"drag\" d-movestart=\"drag\" d-moveend=\"drag\"\u003E\u003Cdiv class=\"t-light\"\u003E" + (null == (pug_interp = t) ? "" : pug_interp) + "\u003C\u002Fdiv\u003E\u003Cdiv" + (" class=\"abs track\""+pug.attr("style", pug.style(`width: ${attrs.track}%`), true, false)) + "\u003E" + (null == (pug_interp = t) ? "" : pug_interp) + "\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
 }
 else {
-pug_html = pug_html + "\u003Cdiv class=\"input-range progress sm\" d-click=\"select\"\u003E\u003Cdiv" + (" class=\"track\""+pug.attr("style", pug.style(`width: ${attrs.track}%`), true, false)) + "\u003E\u003C\u002Fdiv\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"input-range progress sm\" d-click=\"select\" d-move=\"drag\" d-movestart=\"drag\" d-moveend=\"drag\"\u003E\u003Cdiv" + (" class=\"track\""+pug.attr("style", pug.style(`width: ${attrs.track}%`), true, false)) + "\u003E\u003C\u002Fdiv\u003E";
 if (attrs.step > 0) {
 var p= Math.round((attrs.max - attrs.min) / attrs.step);
 p= 100/p;
@@ -50,14 +50,7 @@ i= 2;
 while (i <= lastDay) {
 pug_html = pug_html + "\u003Cdiv" + (" class=\"btn flat\""+pug.attr("d-click", "select "+i, true, false)) + "\u003E" + (pug.escape(null == (pug_interp = i++) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
 }
-pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"Date" in locals_for_with?locals_for_with.Date:typeof Date!=="undefined"?Date:undefined,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateGYears:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"input-date-view grow1 grid grid-c xs2 pt\"\u003E";
-var i=0, startYear= attrs.currentDate.getFullYear() - 53; // - 5 - 12*4
-while (i < 8) {
-++i
-pug_html = pug_html + "\u003Cdiv" + (" class=\"btn ouline\""+pug.attr("d-click", 'select '+(startYear+5), true, false)) + "\u003E" + (pug.escape(null == (pug_interp = startYear) ? "" : pug_interp)) + " - " + (pug.escape(null == (pug_interp = startYear+=11) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
-++startYear;
-}
-pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateHeader:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"header shrink0 f-y pt\"\u003E\u003Cdiv class=\"grow1 pw truncate t-center\" d-click=\"go up\"\u003E";
+pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"Date" in locals_for_with?locals_for_with.Date:typeof Date!=="undefined"?Date:undefined,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateHeader:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"header shrink0 f-y pt\"\u003E\u003Cdiv class=\"grow1 truncate t-center\" d-click=\"go up\"\u003E";
 var currentDate= attrs.currentDate;
 var year= currentDate.getFullYear();
 switch (attrs.currentView.name){
@@ -71,7 +64,14 @@ default:
 pug_html = pug_html + (pug.escape(null == (pug_interp = attrs.currentView.pattern.format(currentDate)) ? "" : pug_interp));
   break;
 }
-pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003Cdiv class=\"g\"\u003E\u003Cspan class=\"btn\" d-click=\"go prev\"\u003E🡄\u003C\u002Fspan\u003E\u003Cspan class=\"btn\" d-click=\"go next\"\u003E🡆\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateMonths:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"input-date-view grow1 grid grid-c xs4 pt\"\u003E";
+pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003Cdiv class=\"g\"\u003E\u003Cspan class=\"btn\" d-click=\"go prev\"\u003E🡄\u003C\u002Fspan\u003E\u003Cspan class=\"btn\" d-click=\"go next\"\u003E🡆\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateGYears:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"input-date-view grow1 grid grid-c xs2 pt\"\u003E";
+var i=0, startYear= attrs.currentDate.getFullYear() - 53; // - 5 - 12*4
+while (i < 8) {
+++i
+pug_html = pug_html + "\u003Cdiv" + (" class=\"btn ouline\""+pug.attr("d-click", 'select '+(startYear+5), true, false)) + "\u003E" + (pug.escape(null == (pug_interp = startYear) ? "" : pug_interp)) + " - " + (pug.escape(null == (pug_interp = startYear+=11) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
+++startYear;
+}
+pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateMonths:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"input-date-view grow1 grid grid-c xs4 pt\"\u003E";
 var i=0, months= i18n.months;
 var currentMonth= attrs.currentDate.getMonth()
 while (i < 12) {
@@ -155,7 +155,9 @@ pug_html = pug_html + "\u003Cdiv" + (" class=\"btn flat\""+pug.attr("d-click", '
 }
 pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDate:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs, input) {pug_html = pug_html + "\u003Cinput" + (pug.attrs(pug.merge([{"class": "hidden","type": "hidden"},input]), false)) + "\u002F\u003E";
 var CoreHTML= Core.html;
+if (!(attrs.noHeader)) {
 pug_html = pug_html + (null == (pug_interp = CoreHTML.inputDateHeader(locals)) ? "" : pug_interp);
+}
 switch (attrs.currentView.name){
 case 'time':
 pug_html = pug_html + (null == (pug_interp = CoreHTML.inputDateTime(locals)) ? "" : pug_interp);

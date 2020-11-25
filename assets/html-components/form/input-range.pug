@@ -1,7 +1,7 @@
 input.hidden(type="range")&attributes(input)
-.input-range.progress.sm(d-click="select")
+.input-range.progress.sm(d-click="select" d-move="drag" d-movestart="drag" d-moveend="drag")
 	.track(style=`width: ${attrs.track}%`)
-		.caret(d-move="drag" d-movestart="drag" d-moveend="drag")
+		.caret
 	//- Steps
 	if attrs.step > 0
 		-var p= Math.round((attrs.max-attrs.min)/attrs.step);

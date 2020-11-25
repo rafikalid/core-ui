@@ -1,7 +1,8 @@
 input.hidden(type="hidden")&attributes(input)
 //- header
 -var CoreHTML= Core.html;
-|!{CoreHTML.inputDateHeader(locals)}
+unless attrs.noHeader
+	|!{CoreHTML.inputDateHeader(locals)}
 	
 //- Body
 case attrs.currentView.name

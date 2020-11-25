@@ -5,7 +5,11 @@ INPUT_DATE_SPECIAL_ATTRS= ['pattern', 'weeks', 'min-span', 'max-span', 'multiple
 Component.defineInit 'input-date', class InputDate extends InputAbstract
 	###* @private Get attributes ###
 	_loadAttributes: ->
-		attributes= @_attributes= @_getAttributes(INPUT_DATE_SPECIAL_ATTRS)
+		@_setAttributes @_getAttributes(INPUT_DATE_SPECIAL_ATTRS)
+		return
+	###* @private Set attributes ###
+	_setAttributes: (attributes)->
+		@_attributes= attributes
 		# attributes
 		element= @element
 		attrs= @_attrs=
@@ -18,6 +22,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 			#
 			multiple:	element.hasAttribute 'multiple'
 			range:		element.hasAttribute 'range'
+			noHeader:	element.hasAttribute 'no-header'
 			pattern:	null
 			weeks:		element.hasAttribute 'weeks'
 			minSpan: 	_strToMilliseconds element.getAttribute('min-span')
@@ -202,7 +207,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		currentDate= attrs.currentDate
 		# If from form
 		if event
-			form= event.currentTarget
+			form= event.target
 			if inpt= form.h
 				v= parseInt inpt.value
 				if inpt= form.tt
@@ -328,10 +333,11 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 			header= view.previousElementSibling
 			requestAnimationFrame (t)=>
 				# Update header
-				header2= _toHTMLElement Core.html.inputDateHeader(attrArg)
-				viewContainer= header.parentNode
-				viewContainer.insertBefore header2, header
-				viewContainer.removeChild header
+				unless attrs.noHeader
+					header2= _toHTMLElement Core.html.inputDateHeader(attrArg)
+					viewContainer= header.parentNode
+					viewContainer.insertBefore header2, header
+					viewContainer.removeChild header
 				# Highlight selected dates
 				@_selectActiveDates(view)
 				return

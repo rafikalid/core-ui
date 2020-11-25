@@ -19,11 +19,23 @@ Component.defineInit 'input-abstract', class InputAbstract extends Component
 		@reload()
 		this # chain
 
+	###* Set attributes ###
+	setAttributes: (attributes)->
+		throw new Error "Illegal arguments" unless arguments.length is 1 and typeof attributes is 'object'
+		# Attributes
+		@_setAttributes _assign (@_attributes or {}), attributes
+		@reload() # reload component HTML
+		this # chain
+	###* @private Set attributes ###
+	_setAttributes: (attributes)->
+		@_attributes= attributes
+		@value= attributes.value # update value
+		return
 	### GETTERS ###
 	```
 	get name(){return this._attributes.name; }
 	get value(){return this._attrs.value; }
-	get defaultValue(){return this._attributes.value; }
+	get defaultValue(){return this._getInput().defaultValue; }
 	get readOnly(){return this._attrs.readOnly; }
 	get min(){return this._attrs.min; }
 	get max(){return this._attrs.max; }
