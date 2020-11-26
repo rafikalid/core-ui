@@ -1,14 +1,16 @@
 ###*
  * INPUT RANGE
 ###
+INPUT_RANGE_ATTRS= ['class', 'hr'] # attributes to ignore
 Component.defineInit 'input-range', class InputRange extends InputAbstract
 	###* @private Get attributes ###
 	_loadAttributes: ->
-		@_setAttributes @_getAttributes()
+		@_setAttributes @_getAttributes(INPUT_RANGE_ATTRS)
 		return
 	###* @private Set attributes ###
 	_setAttributes: (attributes)->
 		@_attributes= attributes
+		element= @element
 		# attributes
 		value= _float attributes.value, 0
 		@_attrs=
@@ -20,15 +22,19 @@ Component.defineInit 'input-range', class InputRange extends InputAbstract
 			max:			_float attributes.max, 100
 			step:			_float attributes.step, null
 			_bound: 		null # "progress" bound, use when drag
+			#
+			className:		element.className
+			fix:			element.hasAttribute 'fix'
+			# className
 		return
-	###* @private Reload component html ###
+	###* Reload component html ###
 	reload: ->
 		# Check values
 		@_fixValues()
 		# render HTML
 		requestAnimationFrame (t)=>
 			@element.innerHTML= @_getHTML()
-			@_getInput[INPUT_COMPONENT_SYMB]= this # link hidden input to this component
+			@_getInput()[INPUT_COMPONENT_SYMB]= this # link hidden input to this component
 			return
 		return
 	###* Get component html ###
@@ -42,6 +48,7 @@ Component.defineInit 'input-range', class InputRange extends InputAbstract
 
 	### GETTERS ###
 	```
+	get value(){ return this._attrs.value; }
 	get step(){return this._attrs.step; }
 	get tmpValue(){return this._attrs.tmpValue; }
 	```
@@ -95,6 +102,7 @@ Component.defineInit 'input-range', class InputRange extends InputAbstract
 		# attrs.originalTrack= p
 		@_setTrack p
 		@value= attrs.tmpValue
+		@_done()
 		return
 
 	###* Fix values ###
@@ -140,6 +148,7 @@ Component.defineInit 'input-range', class InputRange extends InputAbstract
 			when 'moveend'
 				element.classList.remove 'no-anim'
 				@value= attrs.tmpValue
+				@_done()
 			else
 				throw new Error 'Illegal use'
 		return

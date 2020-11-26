@@ -13,11 +13,13 @@ dropdown: (event, args)->
 	# Create popup
 	unless popupG= dropDownBtn[DROPDOWN_SYMB]
 		if dropDownPopup= dropDownBtn.nextElementSibling
-			popupG= dropDownBtn[DROPDOWN_SYMB]= new _Popup
+			popupG= dropDownPopup[DROPDOWN_SYMB]= new _Popup
 				element:	dropDownBtn
 				popup:		dropDownPopup
 				onOpening:	(pos, pop)->
-					dropDownBtn.classList.add 'active', 'caret-' + pos.split('-')[0]
+					cl= dropDownBtn.classList
+					cl.add 'active'
+					cl.add pos.split('-')[0] if pos
 					return
 				onClose:	(pos, pop)->
 					dropDownBtn.classList.remove 'active', 'caret-top', 'caret-right', 'caret-bottom', 'caret-left'

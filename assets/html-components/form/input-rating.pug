@@ -1,12 +1,14 @@
 input.hidden(type="range")&attributes(input)
 if icon
-	-var t= icon.repeat(attrs.max - attrs.min);
-	.input-range.input-rating(d-click="select" d-move="drag" d-movestart="drag" d-moveend="drag")
+	//- HTML
+	-var t= attrs.fix? oldHTML : Array(attrs.max - attrs.min).fill(icon).join(bIcon);
+	//- Render
+	.input-range.input-rating(d-click="select" d-move="drag" d-movestart="drag" d-moveend="drag" class=attrs.className)
 		.t-light !{t}
 		.abs.track(style=`width: ${attrs.track}%`) !{t}
 		//- .hidden.abs !{t}
 else
-	.input-range.progress.sm(d-click="select" d-move="drag" d-movestart="drag" d-moveend="drag")
+	.input-range.progress.sm(d-click="select" d-move="drag" d-movestart="drag" d-moveend="drag" class=attrs.className)
 		.track(style=`width: ${attrs.track}%`)
 		//- Steps
 		if attrs.step > 0

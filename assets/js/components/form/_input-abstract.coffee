@@ -12,7 +12,7 @@ Component.defineInit 'input-abstract', class InputAbstract extends Component
 		# Call super method
 		super.setElement element
 		@_attributes= null	# Element attributes
-		@_attr= null		# Private attributes
+		@_attrs= null		# Private attributes
 		# Load attributes
 		@_loadAttributes()
 		# Reload HTML
@@ -34,7 +34,6 @@ Component.defineInit 'input-abstract', class InputAbstract extends Component
 	### GETTERS ###
 	```
 	get name(){return this._attributes.name; }
-	get value(){return this._attrs.value; }
 	get defaultValue(){return this._getInput().defaultValue; }
 	get readOnly(){return this._attrs.readOnly; }
 	get min(){return this._attrs.min; }
@@ -42,10 +41,7 @@ Component.defineInit 'input-abstract', class InputAbstract extends Component
 	```
 	###* SETTERS ###
 	```
-	set name(v){
-		this._attributes.name= v;
-		this._getInput().name= v;
-	}
+	set name(v){ this._getInput().name= v; }
 	set min(v){
 		var attrs= this._attrs;
 		attrs.min= v;
@@ -77,3 +73,18 @@ Component.defineInit 'input-abstract', class InputAbstract extends Component
 		else
 			attrs[n.name]= n.value for n in @element.attributes
 		return attrs
+
+	###* When value selected and validated by the form-control ###
+	_done: ->
+		# check if inside popup
+		element= @element
+		while element
+			if popopArr= element[POPUP_SYMB]
+				for popup in popopArr
+					try
+						popup.done this
+					catch err
+						Core.fatalError 'POPUP', err
+				break
+			element= element.parentElement
+		return

@@ -6,7 +6,10 @@ Component.defineInit 'input-rating', class InputRating extends InputRange
 		super element
 		element= @element # case when element is string
 		# Selected icon
-		@_icon= element.innerHTML
+		childs= element.childNodes
+		@_oldHTML= element.innerHTML
+		@_icon= (child= childs[0]) and (child.outerHTML or child.wholeText)
+		@_bIcon= (child= childs[1]) and (child.outerHTML or child.wholeText) or ''
 		# State
 		stateClasses= []
 		stateValues= []
@@ -28,7 +31,7 @@ Component.defineInit 'input-rating', class InputRating extends InputRange
 		inputAttrs.value= attrs.value
 		inputAttrs.min= attrs.min
 		inputAttrs.max= attrs.max
-		Core.html.inputRating {input: inputAttrs, attrs: attrs, icon: @_icon, state: @_currentState}
+		Core.html.inputRating {input: inputAttrs, attrs: attrs, icon: @_icon, bIcon: @_bIcon, oldHTML: @_oldHTML, state: @_currentState}
 	###* @private Get attributes ###
 	_loadAttributes: ->
 		super._loadAttributes()

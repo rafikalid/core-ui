@@ -44,7 +44,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		cancelAnimationFrame @_raf if @_raf
 		@_raf= requestAnimationFrame (t)=>
 			@element.innerHTML= @_getHTML()
-			@_getInput[INPUT_COMPONENT_SYMB]= this # link hidden input to this component
+			@_getInput()[INPUT_COMPONENT_SYMB]= this # link hidden input to this component
 			@_selectActiveDates(@_getActiveView())
 			return
 		return
@@ -59,6 +59,8 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 
 	### GETTERS ###
 	```
+	get value(){ return this.toString(); }
+	get values(){ return this._attrs.value; }
 	get pattern(){return this._attrs.pattern;}
 	get multiple(){return this._attrs.multiple;}
 	get range(){return this._attrs.range;}
@@ -88,8 +90,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		else
 			throw new Error('Illegal value: ', v);
 		//# Set
-		var attrs= this._attrs
-		attrs.value= selectedDates;
+		this._attrs.value= selectedDates;
 		this.reload(); //# Reload views
 		// # this.emit('change');
 	}
@@ -231,7 +232,9 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		# Show
 		@_goToView('no')
 		# Set to underline input
-		@element.firstElementChild.value= values.join ','
+		@_getInput().value= values.join ','
+		# value validated
+		@_done()
 		return
 	###* @private Get active view ###
 	_getActiveView: -> @element.getElementsByClassName('input-date-view')[0]
@@ -393,3 +396,11 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 				# else
 				# 	throw new Error "Unimplemented type: #{currentView.name}"
 		return
+	###* toString ###
+	toString: ->
+		values= []
+		attrs= @_attrs
+		pattern= attrs.pattern
+		for v in attrs.value
+			values.push pattern.format v
+		return values.join ', '

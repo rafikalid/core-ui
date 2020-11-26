@@ -157,6 +157,9 @@ class _Popup
 		popupClassList= popupDiv.classList
 		popupClassList.add 'popup'
 		popupClassList.add 'hidden'
+		# Popup container: support that the same poup could have multiple button triggers
+		if popupArr= popupDiv[POPUP_SYMB] then popupArr.push this
+		else popupDiv[POPUP_SYMB]= [this]
 		return
 	###* Open popup ###
 	open: ->
@@ -183,6 +186,7 @@ class _Popup
 			document.addEventListener 'keyup', @_closeEscListener, {capture: no, passive: yes}
 			document.addEventListener 'click', @_closeOutsideListener, {capture: yes, passive: yes}
 			window.addEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
+			window.addEventListener 'scroll', @_closeWindowResize, {capture: no, passive: yes}
 			@_onOpen?(currentPos, this)
 		return # chain
 	###* Close popup ###
@@ -192,6 +196,7 @@ class _Popup
 		document.removeEventListener 'keyup', @_closeEscListener, {capture: no, passive: yes}
 		document.removeEventListener 'click', @_closeOutsideListener, {capture: yes, passive: yes}
 		window.removeEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
+		window.removeEventListener 'scroll', @_closeWindowResize, {capture: no, passive: yes}
 		# animation
 		currentPos= @_currentPos
 		@_onClosing?(currentPos, this)
@@ -266,3 +271,14 @@ class _Popup
 	get popup(){return this._popup;}
 	get element(){return this._element;}
 	```
+
+	###* When a controller inside popup has done ###
+	done: (controller)->
+		# Default behaviour
+		value= controller.value
+		@close()
+		# Check for input
+		if (fCtnrl= @_element.closest('.f-cntrl')) and (input= fCtnrl.getElementsByClassName('f-input')[0])
+			if input.formAction then input.value= value # form control
+			else input.innerText= value # otherwise (div, ...)
+		return
