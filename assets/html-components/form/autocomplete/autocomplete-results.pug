@@ -1,0 +1,7 @@
+if results && results.length
+	- var i= 0, len= results.length, result;
+	while i < len
+		-result= results[i++];
+		li.m-item.hover(d-value=result.id) !{result.titleHTML}
+else
+	li.m-item.t-center.disabled !{i18n.noResults}

@@ -2,34 +2,20 @@
 _slideDown= (element, options)->
 	element[HIDDEN_SYMB]= no	# flag: element is visible
 	element.style.removeProperty 'height'
-	element.classList.remove 'h'
+	element.classList.remove 'hidden'
 	size= element.offsetHeight
-	args=
-		targets:	element
-		height:		[0, size]
-		duration:	200
-		easing:		'easeOutCirc'
-		complete: ->
-			element.style.removeProperty 'height'
-			return
-	_assign args, options if options
-	anime args
-	return
+	options= _assign({duration: Core.ANIM_FAST, easing: 'ease'}, options)
+	return element.animate({height: [0, size+'px']}, options);
 
 # Slideup
 _slideUp= (element, options)->
 	element[HIDDEN_SYMB]= yes	# flag: element is hidden
-	args=
-		targets:	element
-		height:		0
-		duration:	200
-		easing:		'easeOutCirc'
-		complete: ->
-			element.classList.add 'h'
-			return
-	_assign args, options if options
-	anime args
-	return
+	options= _assign({duration: Core.ANIM_FAST, easing: 'ease'}, options)
+	anim= element.animate({height: [ element.offsetHeight+'px' , 0]}, options)
+	anim.finished.then ->
+		element.classList.add 'hidden'
+		return
+	return anim
 
 # Animations wrapper
 class _AnimWrapper

@@ -8,6 +8,12 @@ do ->
 	#=include _const.coffee
 	#=include _utils.coffee
 
+	# External libs
+	#==========================
+	```
+	#=include ../js-libs/**/*.js
+	```
+
 	# INCLUDE EXTERNALIZED LIBS
 	#==========================
 	#=include ../../../await-ajax/assets/_core-body.coffee
@@ -45,8 +51,8 @@ do ->
 	#==========================
 	```
 	#=include ../../tmp/components.js
-	#=include ../js-libs/**/*.js
 	```
+
 	#interface
 	window.Core= Core
 	# Re-init on load

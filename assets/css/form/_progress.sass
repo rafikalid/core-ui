@@ -78,15 +78,10 @@
 svg.progress
 	width: 128px
 	height: 128px
-	&.xs
-		width: 36px
-		height: 36px
-	&.sm
-		width: 64px
-		height: 64px
-
+	background: transparent
+	display: inline-block
 	circle
-		stroke: $default
+		stroke: $border-color
 		stroke-width: 2px
 		stroke-miterlimit: 20px
 		stroke-linecap: round
@@ -105,10 +100,10 @@ svg.progress
 	// radial
 	&.radial
 		height: 64px
-		&.xs
-			height: 16px
-		&.sm
-			height: 32px
+		// &.xs
+		// 	height: 16px
+		// &.sm
+		// 	height: 32px
 		circle
 			transform: rotate(180deg)
 

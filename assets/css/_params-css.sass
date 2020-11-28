@@ -1,0 +1,87 @@
+
+$borderColor: #c5d9e8
+$cDefault:		#e0e0e0
+$cPrimary:		#1f74ff
+$cSuccess:		#46c93a
+$cInfo:			#2db7f5
+$cWarn:			#ffba00
+$cDanger:		#ff4757
+
+html
+	// Text
+	--t-color:	#515a6e
+	// Headers
+	--h-color:	#363636
+
+	// Html background
+	--d-bg:		white
+	--f:		'Open Sans', sans-serif
+	--fs:		14px
+
+	// Border
+	--b:		1px solid #{$borderColor}
+	// border-radius
+	--br:		4px
+	// btn-radius
+	--bbr:		4px
+	// Border color
+	--bc:		#{$borderColor}
+
+	// Card
+	--c-h:		#{$borderColor}
+	--c-bg:		white
+
+	// State
+	--default:		#{$cDefault}
+	--d-light:		#ecf5ff
+
+	--primary:		#{$cPrimary}
+	--primary-l:	#{lighten($cPrimary, 10%)}
+	--primary-d:	#{darken($cPrimary, 10%)}
+
+	--success:		#{$cSuccess}
+	--success-l:	#{lighten($cSuccess, 10%)}
+	--success-d:	#{darken($cSuccess, 10%)}
+
+	--info:			#{$cInfo}
+	--info-l:		#{lighten($cInfo, 10%)}
+	--info-d:		#{darken($cInfo, 10%)}
+
+
+	--warn:			#{$cWarn}
+	--warn-l:		#{lighten($cWarn, 10%)}
+	--warn-d:		#{darken($cWarn, 10%)}
+
+	--danger:		#{$cDanger}
+	--danger-l:		#{lighten($cDanger, 10%)}
+	--danger-d:		#{darken($cDanger, 10%)}
+
+	--disabled:		#bdbdbd
+	--bg-disabled:	#f7f7f7
+
+	--t-orange:		#ffba56
+
+	// Link
+	--l-color:		#409eff
+	--l-hover:		#2d8cf0
+	--l-active:		#2d8cf0
+	// Link active background
+	--l-bg:			#f0faff
+
+	// Gradients
+	--g-d:	#{$cDefault} linear-gradient(60deg, #{$cDefault}, #{darken($cDefault, 4%)})
+
+	// Primary
+	--g-p:	#{$cPrimary} linear-gradient(60deg, #{$cPrimary}, #{darken($cPrimary, 4%)})
+
+	// Success
+	--g-s:	#66bb6a linear-gradient(60deg, #66bb6a, #{darken(#66bb6a, 4)})
+
+	// Info
+	--g-i:	#26c6da linear-gradient(60deg, #26c6da, #{darken(#26c6da, 4%)})
+
+	// Warning
+	--g-w:	#ffa726 linear-gradient(60deg, #ffa726, #{darken(#ffa726, 4%)})
+
+	// Danger
+	--g-dger:	#ef5350 linear-gradient(60deg, #ef5350, #{darken(#ef5350, 4%)})

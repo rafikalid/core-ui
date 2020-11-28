@@ -59,8 +59,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 
 	### GETTERS ###
 	```
-	get value(){ return this.toString(); }
-	get values(){ return this._attrs.value; }
+	get value(){ return this._attrs.value; }
 	get pattern(){return this._attrs.pattern;}
 	get multiple(){return this._attrs.multiple;}
 	get range(){return this._attrs.range;}

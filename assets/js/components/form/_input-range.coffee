@@ -140,6 +140,8 @@ Component.defineInit 'input-range', class InputRange extends InputAbstract
 					bound= attrs._bound
 					if bound.width > 0
 						p= Math.round((event.x - bound.left) * 100 / bound.width)
+						if p < 0 then p= 0
+						else if p > 100 then p= 100
 						# set value
 						self._setTrack p
 						self._setTrackWidth(p)

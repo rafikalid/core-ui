@@ -19,7 +19,7 @@ params=
 module.exports= compiler
 	# .js
 	# 	name:	'API>> Compile Coffee files'
-	# 	src:	'assets/js/core-ui.coffee'
+	# 	src:	'assets/js/ui-comp.coffee'
 	# 	dest:	'build/'
 	# 	watch:	'assets/js/**/*.coffee'
 	# 	data:	params
@@ -38,6 +38,12 @@ module.exports= compiler
 	# Compile sass
 	.sass
 		name:	'API>> Compile Sass files'
-		src:	'assets/css/core-ui.sass'
+		src:	'assets/css/ui-comp.sass'
 		dest:	'build/'
 		watch:	['assets/css/**/*.sass']
+	# Compile theme files
+	.sass
+		name:	'API>> Compile Theme files'
+		src:	'assets/themes/[^_]*.sass'
+		dest:	'build/themes/'
+		watch:	['assets/themes/**/*.sass']

@@ -13,17 +13,18 @@ dropdown: (event, args)->
 	# Create popup
 	unless popupG= dropDownBtn[DROPDOWN_SYMB]
 		if dropDownPopup= dropDownBtn.nextElementSibling
-			popupG= dropDownPopup[DROPDOWN_SYMB]= new _Popup
+			popupG= dropDownBtn[DROPDOWN_SYMB]= new _Popup
 				element:	dropDownBtn
 				popup:		dropDownPopup
-				onOpening:	(pos, pop)->
-					cl= dropDownBtn.classList
-					cl.add 'active'
-					cl.add pos.split('-')[0] if pos
-					return
-				onClose:	(pos, pop)->
-					dropDownBtn.classList.remove 'active', 'caret-top', 'caret-right', 'caret-bottom', 'caret-left'
-					return
+			popupG.on 'opening', (data)->
+				cl= dropDownBtn.classList
+				cl.add 'active'
+				if pos= data.position
+					cl.add 'caret-' + pos.split('-')[0]
+				return
+			popupG.on 'close', (data)->
+				dropDownBtn.classList.remove 'active', 'caret-top', 'caret-right', 'caret-bottom', 'caret-left'
+				return
 		else
 			throw new Error "Missing dropdown popup"
 	# Toggle dropdown

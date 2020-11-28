@@ -10,7 +10,8 @@ stop: ()->
 animate: (keyframes, options)->
 	try
 		elements= @_elements
-		options= _assign {duration: Core.ANIM_FAST, easing: 'ease', fill: 'forwards'}, options
+		# , fill: 'forwards'
+		options= _assign {duration: Core.ANIM_FAST, easing: 'ease'}, options
 		if elements.length is 1
 			result= elements[0].animate keyframes, options
 		else

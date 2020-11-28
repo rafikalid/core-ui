@@ -80,11 +80,15 @@ Component.defineInit 'input-abstract', class InputAbstract extends Component
 		element= @element
 		while element
 			if popopArr= element[POPUP_SYMB]
+				strValue= @toString()
 				for popup in popopArr
 					try
-						popup.done this
+						popup.done this, strValue
 					catch err
 						Core.fatalError 'POPUP', err
 				break
 			element= element.parentElement
 		return
+
+	###* TO String ###
+	toString: -> @value.toString()

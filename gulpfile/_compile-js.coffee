@@ -15,7 +15,7 @@ htmlComponentsTask= ->
 		.pipe Gulp.dest 'tmp/'
 compileCoreJS= ->
 	dest= 'build/'
-	glp= Gulp.src 'assets/js/core-ui.coffee', nodir: yes
+	glp= Gulp.src 'assets/js/ui-comp.coffee', nodir: yes
 		.pipe compiler.onError()
 		.pipe Include hardFail: true
 		.pipe compiler.precompile(params)

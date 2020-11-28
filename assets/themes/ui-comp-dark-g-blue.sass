@@ -1,0 +1,93 @@
+
+$borderColor:	#394e5a
+$cDefault:		#394e5a
+// $cPrimary:		#
+$cSuccess:		#8bc34a
+// $cInfo:			#
+// $cWarn:			#
+// $cDanger:		#
+
+html
+	// Text
+	--t-color:	#7996a9
+	// Headers
+	--h-color:	#dcf3ff
+
+	// Html background
+	--d-bg:		#22313a
+	--f:		'Open Sans', sans-serif
+	--fs:		14px
+
+	// Border
+	--b:		1px solid #{$borderColor}
+	// border-radius
+	--br:		4px
+	// btn-radius
+	--bbr:		4px
+	// Border color
+	--bc:		#{$borderColor}
+
+	// Card head
+	--c-h:		#2f414c
+	// Card body background
+	--c-bg:		#2b3c46
+
+	// State
+	--default:		#{$cDefault}
+	--d-light:		#{lighten(#2b3c46, 10%)}
+
+	// --primary:		#{$cPrimary}
+	// --primary-l:	lighten(#{$cPrimary}, 10%)
+	// --primary-d:	darken(#{$cPrimary}, 10%)
+	//
+	// --success:		#{$cSuccess}
+	// --success-l:	lighten(#{$cSuccess}, 10%)
+	// --success-d:	darken(#{$cSuccess}, 10%)
+	//
+	// --info:			#{$cInfo}
+	// --info-l:		lighten(#{$cInfo}, 10%)
+	// --info-d:		darken(#{$cInfo}, 10%)
+	//
+	//
+	// --warn:			#{$cWarn}
+	// --warn-l:		lighten(#{$cWarn}, 10%)
+	// --warn-d:		darken(#{$cWarn}, 10%)
+	//
+	// --danger:		#{$cDanger}
+	// --danger-l:		lighten(#{$cDanger}, 10%)
+	// --danger-d:		darken(#{$cDanger}, 10%)
+	//
+	// --disabled:		#
+	// --bg-disabled:	#
+	//
+	// --t-orange:		#
+
+	// Link
+	--l-color:		#9bbcd1
+	--l-hover:		#dcf3ff
+	// --l-active:		#
+	// Link active background
+	--l-bg:			#{lighten(#2b3c46, 10%)}
+
+	// Gradients
+	--g-d:	#{$cDefault} linear-gradient(60deg, #{$cDefault}, #{darken($cDefault, 4%)})
+
+	// Primary
+	// --g-p:	#{$cPrimary} linear-gradient(60deg, #{$cPrimary}, #{darken($cPrimary, 4%)})
+
+	// Success
+	--g-s:	#66bb6a linear-gradient(60deg, #66bb6a, #{darken(#66bb6a, 4)})
+
+	// Info
+	--g-i:	#26c6da linear-gradient(60deg, #26c6da, #{darken(#26c6da, 4%)})
+
+	// Warning
+	--g-w:	#ffa726 linear-gradient(60deg, #ffa726, #{darken(#ffa726, 4%)})
+
+	// Danger
+	--g-dger:	#ef5350 linear-gradient(60deg, #ef5350, #{darken(#ef5350, 4%)})
+
+
+// Border & shadow
+.overlay
+	box-shadow: 0 0 0 8px #394e5a
