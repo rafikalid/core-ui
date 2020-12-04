@@ -23,6 +23,7 @@ do ->
 	#=include ../../../core-router/assets/_core-body.coffee
 	#=include ../../../core-string/assets/_core-body.coffee
 	#=include ../../../js-component/assets/_core-body.coffee
+	#=include ../../../lru-ttl-cache/assets/_core-body.coffee
 
 	# BODY
 	#==========================
@@ -43,6 +44,7 @@ do ->
 		#=include ../../../core-router/assets/_core-interface.coffee
 		#=include ../../../core-string/assets/_core-interface.coffee
 		#=include ../../../js-component/assets/_core-interface.coffee
+		#=include ../../../lru-ttl-cache/assets/_core-interface.coffee
 
 		# INTERNAL LIBS
 		#=include interfaces/**/_*.coffee

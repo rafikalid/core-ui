@@ -12,13 +12,14 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		@_attributes= attributes
 		# attributes
 		element= @element
+		# Private attributes
 		attrs= @_attrs=
 			value:			null
 			tmpValue:		null	# temp value when draging
 			readonly:		!!attributes.readonly
 			#
-			min:	_toTimeStamp attributes.min, -Infinity
-			max:	_toTimeStamp attributes.max, Infinity
+			min:	_parseDate attributes.min
+			max:	_parseDate attributes.max
 			#
 			multiple:	element.hasAttribute 'multiple'
 			range:		element.hasAttribute 'range'
@@ -63,31 +64,35 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 	get pattern(){return this._attrs.pattern;}
 	get multiple(){return this._attrs.multiple;}
 	get range(){return this._attrs.range;}
+	get min(){return this._attrs.min}
+	get max(){return this._attrs.max}
 	```
 
 	###* Set value ###
 	```
 	set value(v){
 		//# Checkes and format
-		var selectedDates= [], ref, len, i, vl;
+		var selectedDates, ref, len, i, ref2;
 		if(typeof v == 'string'){
-			v= v.trim()
+			selectedDates= [];
+			v= v.trim();
 			if(v){
 				ref= v.split(',');
-				len= ref.length
-				for(i=0; i < len; i++){
-					vl= new Date(ref[i]);
-					if(isNaN(vl.getDate())) throw new Error('Illegal date: ' + ref[i]);
-					selectedDates.push(vl);
-				}
+				len= ref.length;
+				for(i=0; i < len; i++)
+					ref2= _parseDate(ref[i]);
+					if(ref2 != null)
+						selectedDates.push(ref2);
 			}
 		}
-		else if (v instanceof Date)
+		else if(typeof v === 'number')
+			selectedDates= Number.isFinite(v)? [new Date(v)] : []
+		else if(v instanceof Date)
 			selectedDates= [v]
 		else if(_isArray(v) && v.each(e=> e instanceof Date))
 			selectedDates= v.slice(0);
 		else
-			throw new Error('Illegal value: ', v);
+			throw new Error('Illegal value: '+ v);
 		//# Set
 		this._attrs.value= selectedDates;
 		this.reload(); //# Reload views
@@ -115,6 +120,14 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		}
 		else throw new Error("Illegal value");
 	}
+	set min(v){
+		this._attrs.min= _parseDate(v);
+		this.reload(); //# Reload views
+	}
+	set max(v){
+		this._attrs.max= _parseDate(v);
+		this.reload(); //# Reload views
+	}
 	```
 	###* Fix values ###
 	_fixValues: ->
@@ -123,11 +136,11 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		max=	attrs.max
 		values=	attrs.value
 		# min/max
-		throw new Error "MAX is less than MIN!" if max < min
+		throw new Error "MAX is less than MIN!" if max and min and max < min
 		# Value
-		for v in values
-			if v < min then v= new Date(min)
-			else if v > max then value= new Date(max)
+		for v, i in values
+			if min and v < min then values[i]= new Date(min)
+			else if max and v > max then values[i]= new Date(max)
 		# Current date
 		attrs.currentDate= new Date(values[0]) or new Date()
 		return
@@ -350,45 +363,110 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		attrs= @_attrs
 		currentView= attrs.currentView
 		currentDate= attrs.currentDate
+		minDate= attrs.min
+		maxDate= attrs.max
 		# Range
 		if attrs.range
 			throw new Error "Range not yeat implemented!"
 		# signle or multiple dates
 		else
+			activeViewNodes= activeView.children
+			activeViewNodesLen= activeViewNodes.length
 			switch currentView.name
 				when 'g-years'
 					w= currentDate.getFullYear()
 					for dt in attrs.value
 						v= dt.getFullYear()
-						if v is w or w-47 <= v <= w+48
-							if elC= activeView.children[((v-w+53)/12)>>0]
-								elC= elC.classList
-								elC.remove 'outline'
-								elC.add 'primary'
+						index= ((v - w + 53)/12) >> 0
+						if 0 <= index < activeViewNodesLen and (elC= activeViewNodes[index])
+							elC= elC.classList
+							elC.remove 'outline'
+							elC.add 'primary'
+					# Min date
+					if minDate
+						_disableLessThan activeViewNodes, ((minDate.getFullYear() - w + 53)/12)>>0
+					if maxDate
+						_disableGreaterThan activeViewNodes, ((maxDate.getFullYear() - w + 53)/12)>>0
 				when 'years'
 					w= currentDate.getFullYear()
 					for dt in attrs.value
 						v= dt.getFullYear()
-						if v is w or w-5 <= v <= w+6
-							if elC= activeView.children[v-w+5]
-								elC= elC.classList
-								elC.remove 'flat'
-								elC.add 'primary', 'crcl', 'lg', 'f-c'
-				when 'months'
-					year= currentDate.getFullYear()
-					for dt in attrs.value when year is dt.getFullYear()
-						if elC= activeView.children[dt.getMonth()]
+						index= v - w + 5
+						if 0 <= index < activeViewNodesLen and (elC= activeViewNodes[index])
 							elC= elC.classList
 							elC.remove 'flat'
 							elC.add 'primary', 'crcl', 'lg', 'f-c'
+					# Min date
+					if minDate
+						_disableLessThan activeViewNodes, (minDate.getFullYear() - w + 5)>>0
+					if maxDate
+						_disableGreaterThan activeViewNodes, (maxDate.getFullYear() - w + 5)>>0
+				when 'months'
+					year= currentDate.getFullYear()
+					for dt in attrs.value when year is dt.getFullYear()
+						if elC= activeViewNodes[dt.getMonth()]
+							elC= elC.classList
+							elC.remove 'flat'
+							elC.add 'primary', 'crcl', 'lg', 'f-c'
+					# Min date
+					if minDate
+						y= minDate.getFullYear()
+						if y > year
+							_disableAll activeViewNodes
+						else if y is year
+							_disableLessThan activeViewNodes, minDate.getMonth()
+					# Max date
+					if maxDate
+						y= maxDate.getFullYear()
+						if y < year
+							_disableAll activeViewNodes
+						else if y is year
+							_disableGreaterThan activeViewNodes, maxDate.getMonth()
 				when 'days'
 					year= currentDate.getFullYear()
 					month= currentDate.getMonth()
 					for dt in attrs.value when year is dt.getFullYear() and month is dt.getMonth()
-						if elC= activeView.children[6+dt.getDate()]
+						if elC= activeViewNodes[6+dt.getDate()]
 							elC= elC.classList
 							elC.remove 'flat'
 							elC.add 'primary', 'crcl', 'f-c'
+					# Min date
+					if minDate
+						minYear= minDate.getFullYear()
+						minMonth= minDate.getMonth()
+						endIndex= 0
+						# If some days will be disabled
+						if year is minYear
+							if month is minMonth
+								endIndex= 5 + minDate.getDate()
+							else if month < minMonth
+								# Disable all
+								endIndex= activeViewNodesLen - 1
+						else if year < minYear
+							# Disable all
+							endIndex= activeViewNodesLen - 1
+						# Disable
+						i= 7
+						while i <= endIndex
+							activeViewNodes[i++].classList.add 'disabled'
+					# Max date
+					if maxDate
+						maxYear= maxDate.getFullYear()
+						maxMonth= maxDate.getMonth()
+						startIndex= activeViewNodesLen
+						if year is maxYear
+							if month is maxMonth
+								startIndex= 7 + maxDate.getDate()
+							else if month > maxMonth
+								# disable all
+								startIndex= 7
+						else if year > maxYear
+							# disable all
+							startIndex= 7
+						# Disable
+						i= startIndex
+						while i < activeViewNodesLen
+							activeViewNodes[i++].classList.add 'disabled'
 				# when 'time'
 				# 	console.log 'line'
 				# 	# vievw= Core.html.inputDateTime attrArg

@@ -81,13 +81,29 @@ _float= (value, defaultValue)->
 	value= parseFloat value
 	return if isNaN value then defaultValue else value
 
-###* Convert date to timestamp ###
-_toTimeStamp= (date, defaultV)->
-	return defaultV unless date
-	dateV= new Date date
-	if isNaN dateV.getDate()
-		dateV= parseInt date
-		return defaultV if isNaN dateV
-		dateV= new Date dateV
-		return defaultV if isNaN dateV.getDate()
-	return dateV.getTime()
+
+###* Disable html elements ###
+_disableAll= (nodes)->
+	for elC in nodes
+		elC.classList.add 'disabled'
+	return
+###* Disable html elements width index less than ###
+_disableLessThan= (nodes, index)->
+	len= nodes.length
+	if index >= len
+		_disableAll nodes
+	else if index > 0
+		i= 0
+		while i < index
+			nodes[i++].classList.add 'disabled'
+	return
+###* Disable html elements width index greater than ###
+_disableGreaterThan= (nodes, index)->
+	len= nodes.length
+	if index < 0
+		_disableAll nodes
+	else if index < len
+		i= index+1
+		while i < len
+			nodes[i++].classList.add 'disabled'
+	return

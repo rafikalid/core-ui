@@ -9,3 +9,6 @@ AUTO_COMPLETE_SYMB= Symbol 'AutoComplete' # Used for popup container
 
 # limit visible results in the AutoComplete
 AUTO_COMPLETE_LIMIT= 5
+
+# Date
+DEFAULT_DATE_PATTERN= 'full'

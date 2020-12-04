@@ -117,19 +117,15 @@ select.f-input
 				color: inherit
 // States
 @each $el in primary, success, info, warn, error
-	.when-#{$el}
+	*:not(.has-#{$el})>.w-#{$el}
 		@extend %hidden
-	.has-#{$el} .when-#{$el}
-		display: initial!important
 
-.when-loading
+*:not(.loading)>.w-loading
 	display: none
-.loading
-	.when-loading
-		display: block!important
-	// Hide when loading
-	.h-loading
-		display: none!important
+
+// Hide when loading
+.loading>.h-loading
+	display: none!important
 
 // // input with icons
 // label.f-input
@@ -230,11 +226,11 @@ select.f-input
  */
 .f-switch
 	@extend %f-radio
-	.when-on, .when-off
+	.w-on, .w-off
 		color: white
 		font-size: .8em
 		padding: .2em
-	.when-off
+	.w-off
 		display: block
 	input
 		&+span
@@ -270,9 +266,9 @@ select.f-input
 			&:after
 				margin-left: 100%
 				transform: translateX(-100%)
-			.when-on
+			.w-on
 				display: block
-			.when-off
+			.w-off
 				display: none
 	&:active
 		input+span
@@ -299,10 +295,10 @@ form.loading
 	// position: relative
 	// pointer-events: none
 	// @extend %loading
-	>:not(.progress):not(.when-loading)
+	>:not(.progress):not(.w-loading)
 		// opacity: .5
 		filter: blur(2px)
-	>.progress, >.when-loading
+	>.progress, >.w-loading
 		// opacity: 1
 		// filter: none
 		&.abs

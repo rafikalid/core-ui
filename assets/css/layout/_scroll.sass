@@ -1,12 +1,19 @@
 
 // overflow
-.scroll
+.oa
 	overflow: auto
-.scroll-x
+.ox
 	overflow: auto
 	overflow-y: hidden
-.scroll-y
+.oy
 	overflow: auto
 	overflow-x: hidden
-.scroll-n
+.oh
 	overflow: hidden
+
+// Overflow auto on mobile view
+.oy-xs
+	overflow: auto
+	overflow-x: hidden
+	@media(min-width: 600px)
+		overflow: initial
