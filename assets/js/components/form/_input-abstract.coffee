@@ -76,19 +76,31 @@ Component.defineInit 'input-abstract', class InputAbstract extends Component
 
 	###* When value selected and validated by the form-control ###
 	_done: ->
-		# check if inside popup
 		element= @element
-		while element
-			if popopArr= element[POPUP_SYMB]
-				strValue= @toString()
-				for popup in popopArr
-					try
-						popup.done this, strValue
-					catch err
-						Core.fatalError 'POPUP', err
-				break
-			element= element.parentElement
+		# Call method from parent component
+		if doneCb= @_attrs.done
+			args= doneCb.trim().split /\s+/
+			comp= _closestComponent(element.parentNode)
+			if doneCb= comp[args[0]]
+				doneCb.call comp, {currentTarget: element, target: element, realTarget: element, component: this}, args
+			else
+				Core.fatalError 'INPUT', "Missing method '#{args[0]}' on component: #{comp.tagName}"
+		# check if inside popup
+		else
+			while element
+				if popopArr= element[POPUP_SYMB]
+					strValue= @toString()
+					for popup in popopArr
+						try
+							popup.done this
+						catch err
+							Core.fatalError 'POPUP', err
+					break
+				element= element.parentElement
 		return
 
 	###* TO String ###
 	toString: -> @value.toString()
+	```
+	get strValue(){return this.value.toString()}
+	```

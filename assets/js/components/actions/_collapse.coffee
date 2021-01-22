@@ -11,7 +11,16 @@
 collapse: (event, args)->
 	currentTarget= event.currentTarget
 	currentTargetClassList= currentTarget.classList
-	if targetDiv= currentTarget.nextSibling
+	# target
+	if args.length > 2
+		selector= args.slice(2).join ' '
+		if selector.startsWith ':scope'
+			targetDiv= currentTarget.querySelector selector
+		else
+			targetDiv= document.querySelector selector
+	else
+		targetDiv= currentTarget.nextSibling
+	if targetDiv
 		targetDivOp= Core.op(targetDiv).stop()
 		# Collapse
 		switch args[1]

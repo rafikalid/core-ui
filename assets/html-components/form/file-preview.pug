@@ -1,9 +1,10 @@
 if file.type.startsWith('image/')
-	.card.ib.flat.w200px.r.m2.loading
-		span.close(d-click="rmFile") ×
-		.avatar.img
+	.card.flat.r.loading.f-col
+		span.close.abs.bg-default.c-circle(d-click="rmFile") ×
+		.w-loading.grow1.f-c #[i.ico.t-4xl.rotate ]
+		.h-loading.grow1.img
 		.truncate.pt #{file.name}
 else
 	.card.flat.if-y.m2
 		.truncate.pt.grow1 #{file.name}
-		span.btn.flat.danger.t-xl(d-click="rmFile") ×
+		span.close(d-click="rmFile") ×

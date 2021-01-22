@@ -1,5 +1,7 @@
 input, textarea, select, button
-	font-size: $text-size
+	font-size: $text-size-mobile
+	@media(min-width: 600px)
+		font-size: $text-size
 
 input, textarea
 	@extend %select
@@ -85,6 +87,7 @@ input[type="number"].f-input
 		margin: 0
 select.f-input
 	-webkit-appearance: auto
+	cursor: pointer
 
 .f-text
 	@extend %f-input

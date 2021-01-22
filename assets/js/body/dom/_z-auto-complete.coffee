@@ -21,14 +21,14 @@ class AutoComplete extends _Popup
 			tx= @_createPopup()
 			tx= _toHTMLElement tx if typeof tx is 'string'
 			@setPopup tx
+		# Menu
+		@setMenu @popup.querySelector '.results'
 		# Remove popup from DOM when closed
 		@on 'close', @_detach.bind this
 		# Listeners
-		@_keyup= @_keyup.bind this
 		@_keydown= @_keydown.bind this
 		# Add keyup event listener
 		element.addEventListener 'keydown', @_keydown, false
-		element.addEventListener 'keyup', @_keyup, {capture: no, passive: yes}
 		return
 	###* Open  ###
 	open: ->
@@ -40,51 +40,33 @@ class AutoComplete extends _Popup
 			popupDiv= @_popup
 			throw new Error "Missing popup" unless popupDiv
 			popupDiv.innerHTML= @_initPopup({element: element, isMobile: isMobile, showInput: showInput})
-			# Events
-			popupDiv.addEventListener 'click', @_itemClick.bind(this), {capture: no, passive: yes}
 			# Link to DOM
 			document.body.appendChild popupDiv
 			# Open popup
 			super.open()
 			# Focus input
 			if showInput and (input= popupDiv.querySelector('input.f-input'))
-				# TODO: check why not working
-				input.addEventListener 'keyup', @_keyup, {capture:no, passive: yes}
 				input.focus()
 				input.select()
 		this # chain
-	# ###* Close  ###
-	# close: ->
 	# 	this # chain
 	###* keyup listener ###
-	_keydown: (event)->
-		event.preventDefault() if event.keyCode in [38, 40, 13]
-		return
 	_keyup: (event)->
-		input= event.target
-		switch event.keyCode
-			when 13 # Enter
-				@_apply input
-			# when 27 # ESC
-			# 	return # close popup
-			when 37, 39 # Arrow left, Arrow right
-				return # ignore
-			when 38 # Arrow up
-				@up(input)
-			when 40 # Arrow down
-				@down(input)
-			else
-				@find event.target.value
+		super._keyup event
+		# ---
+		if event.keyCode not in [13, 27, 37, 38, 39, 40]
+			@find event.target.value
 		return
 	###* Apply enter keyup ###
-	_apply: (input)->
+	_apply: (event)->
+		input= event.target
 		inpValue= input.value
 		if obj= input[INPUT_COMPONENT_SYMB]
 			item= obj.item
 			if item.title is inpValue
-				@done obj, item.title
+				@done item
 				return
-		@done null, inpValue
+		@done {id: null, title: inpValue}
 		return
 	###* Find element ###
 	find: (q)->
@@ -232,17 +214,16 @@ class AutoComplete extends _Popup
 			throw new Error("Illegal data format");
 	}
 	```
-	###* When an item is clicked ###
-	_itemClick: (event)->
-		if element= event.target.closest '[d-value]'
-			item= @getById element.getAttribute 'd-value'
-			@done {value: item.id, item: item}, item.title
-		return
 	###* GET data by id ###
 	getById: (id)->
 		if data= @_cData
 			return item for item in data.results when item.id is id
 		return null
+	###* set value by id ###
+	setById: (id)->
+		if item= @getById id
+			@done item
+		this # chain
 	###*
 	 * GET item by title
 	 * @used when validating field
@@ -270,40 +251,16 @@ class AutoComplete extends _Popup
 			return data
 		# Not found
 		return null
-	###* list up down ###
-	up: (input)-> @_up input, yes
-	down: (input)-> @_up input, no
-	_up: (input, isUp)->
-		return unless resultsDiv= @_popup.querySelector '.results'
-		if li= resultsDiv.querySelector ':scope>.active'
-			li.classList.remove 'active'
-			if isUp
-				if li is resultsDiv.firstElementChild
-					li= resultsDiv.lastElementChild
-				else
-					li= li.previousElementSibling
-			else
-				if li is resultsDiv.lastElementChild
-					li= resultsDiv.firstElementChild
-				else
-					li= li.nextElementSibling
-		else
-			li= if isUp then resultsDiv.lastElementChild else resultsDiv.firstElementChild
-		# Set value
-		if li
-			li.classList.add 'active'
-			if input
-				item= @getById li.getAttribute 'd-value'
-				input.value= item.title
-				input[INPUT_COMPONENT_SYMB]= {value: item.id, item: item}
-		return
 
-	###* DONE ###
-	done: (component, textValue)->
-		element= @element
-		element[INPUT_COMPONENT_SYMB]= component
-		if element.formAction then element.value= textValue
-		else input.innerText= strValue # otherwise (div, ...)
-		# Close popup
-		@close()
+	###* Done ###
+	done: (item)->
+		super.done {value: item.id, strValue: item.title, item: item}
+		this # chain
+	###* List up/down ###
+	_up: (event, isUp)->
+		li super._up(event, isUp)
+		# Selected element
+		if li and (input= event.target) and (item= @getById li.getAttribute 'd-value')
+			input.value= item.title
+			input[INPUT_COMPONENT_SYMB]= {value: item.id, item: item}
 		return

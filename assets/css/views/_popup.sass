@@ -3,11 +3,21 @@
 	z-index: $zfront
 	@media(max-width: $sm)
 		top: 2px
-		left: 2px
+		// left: 2px
 		right: 2px
-		bottom: 2px
-		width: auto
-		height: auto
+		// bottom: 2px
+		min-width: 80%
+		min-height: 80%
+		max-width: 100%
+		max-height: 100%
+.popupTransp
+	position: fixed
+	z-index: $zfront - 1
+	top: 0
+	right: 0
+	bottom: 0
+	left: 0
+	background: transparent
 
 // .popup
 // 	position: absolute

@@ -75,28 +75,29 @@ filePreview: do ->
 				component.filePreviewSrc fContainer, file, data
 				return
 		return
+	# Get selected element
+	_getSelectedElement= (fCntrl, selector, defaultSelector)->
+		if selector and (selector= selector.trim())
+			if selector.startsWith ':scope'
+				result= fCntrl.querySelector selector
+			else
+				result= document.querySelector selector
+		else
+			result= fCntrl.querySelector defaultSelector
+		return result
 	# Interface
 	return (input, files, addedFiles)->
+		fCntrl= input.closest('.f-cntrl') or input
 		# SHOW PREVIEWS
 		if input.hasAttribute 'd-preview'
 			# Get container
-			if selector= input.getAttribute('d-preview').trim()
-				previewContainer= document.querySelector selector
-			else
-				previewContainer= input.closest('.f-cntrl').querySelector '.files-preview'
-			# Add previews
-			if previewContainer
+			if previewContainer= _getSelectedElement fCntrl, input.getAttribute('d-preview'), '.files-preview'
 				_emptyElement(previewContainer) unless input.multiple
 				_createPreview this, input, previewContainer, file for file in addedFiles
 		# BACKGROUND PREVIEW
 		if (file= addedFiles[0]) and input.hasAttribute 'd-preview-bg'
-			# Get target element
-			if selector= input.getAttribute('d-preview-bg').trim()
-				element= document.querySelector selector
-			else
-				element= input.closest('.f-cntrl').querySelector '.bg-preview'
-			if element
-				eClassList= element.classList
+			if element= _getSelectedElement fCntrl, input.getAttribute('d-preview-bg'), '.bg-preview'
+				eClassList= fCntrl.classList
 				eClassList.add 'loading'
 				fileData= await _readFile file
 				eClassList.remove 'loading'

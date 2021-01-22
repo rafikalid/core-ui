@@ -6,7 +6,7 @@
 modal: (html)->
 	# Create promise
 	_close= null
-	_closeWhenBack= null
+	_historyBackClose= null
 	element= null
 	# Keyboard listener
 	# _keyboardListener= (event)->
@@ -20,12 +20,11 @@ modal: (html)->
 		_close= (value)->
 			res value or 'close'
 			return
-		# close Fx
-		_closeWhenBack= ->
-			res 'close'
-			return
 		# Close modal when history back
-		Core.defaultRouter?.whenBack _closeWhenBack
+		if ob= Core.defaultRouter
+			_historyBackClose= ob.whenBack ->
+				res 'close'
+				return 
 		# DOM
 		body= document.body
 		body.classList.add 'modal-open'
@@ -46,7 +45,7 @@ modal: (html)->
 	# Add finnaly
 	p= p.finally (res)->
 		# Remove _close from Router
-		Core.defaultRouter?.removeBack _closeWhenBack
+		_historyBackClose?.cancel()
 		# Body classes
 		body= document.body
 		body.removeChild element if element?

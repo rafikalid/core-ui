@@ -2,7 +2,7 @@
 _slideDown= (element, options)->
 	element[HIDDEN_SYMB]= no	# flag: element is visible
 	element.style.removeProperty 'height'
-	element.classList.remove 'hidden'
+	element.classList.remove 'hidden', 'h'
 	size= element.offsetHeight
 	options= _assign({duration: Core.ANIM_FAST, easing: 'ease'}, options)
 	return element.animate({height: [0, size+'px']}, options);
@@ -13,7 +13,7 @@ _slideUp= (element, options)->
 	options= _assign({duration: Core.ANIM_FAST, easing: 'ease'}, options)
 	anim= element.animate({height: [ element.offsetHeight+'px' , 0]}, options)
 	anim.finished.then ->
-		element.classList.add 'hidden'
+		element.classList.add 'h'
 		return
 	return anim
 

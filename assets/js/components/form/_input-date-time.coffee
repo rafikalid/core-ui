@@ -1,8 +1,14 @@
 ###*
  * INPUT RANGE
 ###
-INPUT_DATE_SPECIAL_ATTRS= ['pattern', 'weeks', 'min-span', 'max-span', 'multiple', 'range', 'view']
+INPUT_DATE_SPECIAL_ATTRS= ['class', 'pattern', 'weeks', 'min-span', 'max-span', 'multiple', 'range', 'view', 'done']
 Component.defineInit 'input-date', class InputDate extends InputAbstract
+	constructor: (element)->
+		super element
+		element= @element # case when element is string
+		childs= element.childNodes
+		@_header= (child= childs[0]) and child.outerHTML
+		return
 	###* @private Get attributes ###
 	_loadAttributes: ->
 		@_setAttributes @_getAttributes(INPUT_DATE_SPECIAL_ATTRS)
@@ -17,6 +23,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 			value:			null
 			tmpValue:		null	# temp value when draging
 			readonly:		!!attributes.readonly
+			done:			element.getAttribute 'done'
 			#
 			min:	_parseDate attributes.min
 			max:	_parseDate attributes.max
@@ -56,7 +63,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		inputAttrs.value= attrs.value
 		inputAttrs.min= attrs.min
 		inputAttrs.max= attrs.max
-		Core.html.inputDate input: inputAttrs, attrs: attrs
+		return Core.html.inputDate input: inputAttrs, attrs: attrs, header: @_header
 
 	### GETTERS ###
 	```

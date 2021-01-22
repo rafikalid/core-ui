@@ -1,29 +1,31 @@
 
-$borderColor: #c5d9e8
-$cDefault:		#e0e0e0
-$cPrimary:		#1f74ff
-$cSuccess:		#46c93a
-$cInfo:			#2db7f5
-$cWarn:			#ffba00
-$cDanger:		#ff4757
+$borderColor:	#F8725C
+$cDefault:		#F8725C
+$cPrimary:		#AC2510
+$cSuccess:		#6cf615
+$cInfo:			#17d7f6
+// $cWarn:			#
+$cDanger:		#FFCCCC
 
 html
 	// Text
-	--t-color:	#515a6e
+	--t-color:	white
 	// Headers
-	--h-color:	#363636
-	// invert text color
-	--white-headr: #5A5A5A
-	--white-color: #5A5A5A
+	--h-color:	white
+	// white section
+	--white-headr: #ed4322
+	// --white-color: #ed4322
 	--white-bg: white
 	--white-lnk: #409eff
 	--white-lnk-h: #2d8cf0
 
-	// Html background
-	--d-bg:		white
-
 	// dark footer
-	--footer-c: #1c242c
+	--footer-c: #7B1B0B
+
+	// Html background
+	--d-bg:		#f63617
+	--f:		'Open Sans', sans-serif
+	--fs:		14px
 
 	// Button hover color
 	--btn-h:	white
@@ -37,47 +39,47 @@ html
 	// Border color
 	--bc:		#{$borderColor}
 
-	// Card
-	--c-h:		#{$borderColor}
-	--c-bg:		white
+	// Card head
+	--c-h:		#F75E45
+	// Card body background
+	--c-bg:		#F64A2E
 
 	// State
 	--default:		#{$cDefault}
-	--d-light:		#ecf5ff
+	--d-light:		#{lighten(#F64A2E, 10%)}
 
 	--primary:		#{$cPrimary}
-	--primary-l:	#{lighten($cPrimary, 10%)}
+	--primary-l:	#C42B12
 	--primary-d:	#{darken($cPrimary, 10%)}
-
+	//
 	--success:		#{$cSuccess}
 	--success-l:	#{lighten($cSuccess, 10%)}
 	--success-d:	#{darken($cSuccess, 10%)}
-
+	//
 	--info:			#{$cInfo}
 	--info-l:		#{lighten($cInfo, 10%)}
 	--info-d:		#{darken($cInfo, 10%)}
-
-
-	--warn:			#{$cWarn}
-	--warn-l:		#{lighten($cWarn, 10%)}
-	--warn-d:		#{darken($cWarn, 10%)}
-
+	//
+	//
+	// --warn:			#{$cWarn}
+	// --warn-l:		lighten(#{$cWarn}, 10%)
+	// --warn-d:		darken(#{$cWarn}, 10%)
+	//
 	--danger:		#{$cDanger}
 	--danger-l:		#{lighten($cDanger, 10%)}
 	--danger-d:		#{darken($cDanger, 10%)}
-
-	--disabled:		#bdbdbd
-	--bg-disabled:	#f7f7f7
-
-	// --t-orange:		#ffba56
-	--t-orange:		#ed4322
+	//
+	--disabled:		#E7FBFE
+	// --bg-disabled:	#
+	//
+	// --t-orange:		#
 
 	// Link
-	--l-color:		#409eff
-	--l-hover:		#2d8cf0
-	--l-active:		#2d8cf0
+	--l-color:		#FEEAE7
+	--l-hover:		white
+	--l-active:		#0B6B7B
 	// Link active background
-	--l-bg:			#f0faff
+	--l-bg:			#{lighten(#F64A2E, 10%)}
 
 	// Gradients
 	--g-d:	#{$cDefault} linear-gradient(60deg, #{$cDefault}, #{darken($cDefault, 4%)})
@@ -86,22 +88,23 @@ html
 	--g-p:	#{$cPrimary} linear-gradient(60deg, #{$cPrimary}, #{darken($cPrimary, 4%)})
 
 	// Success
-	--g-s:	#66bb6a linear-gradient(60deg, #66bb6a, #{darken(#66bb6a, 4)})
+	--g-s:	#{$cSuccess linear-gradient(60deg, $cSuccess, darken($cSuccess, 4))}
 
 	// Info
-	--g-i:	#26c6da linear-gradient(60deg, #26c6da, #{darken(#26c6da, 4%)})
+	--g-i:	#{$cInfo} linear-gradient(60deg, #{$cInfo}, #{darken($cInfo, 4%)})
 
 	// Warning
 	--g-w:	#ffa726 linear-gradient(60deg, #ffa726, #{darken(#ffa726, 4%)})
 
 	// Danger
-	--g-dger:	#ef5350 linear-gradient(60deg, #ef5350, #{darken(#ef5350, 4%)})
-
-	// viewport height, used to fix chrome bug with mobiles
-	--vh: 100vh
+	--g-dger:	#{$cDanger linear-gradient(60deg, $cDanger, darken($cDanger, 4%))}
 
 	--menu-bar: #1e2a31
 
 	// Section to make strip effect, only for basic one, theme should set this to transparent
-	--section-bg: #26313c
-	--section-bg-color: #e6e6e6
+	--section-bg: inherit
+	--section-bg-color: inherit
+
+// Border & shadow
+.overlay
+	box-shadow: 0 0 0 8px #F8725C

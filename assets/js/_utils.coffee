@@ -41,7 +41,9 @@ _emptyElement= (element)->
 _readFile= (file)->
 	new Promise (res, rej)->
 		reader = new FileReader()
-		reader.onload= -> res reader.result
+		reader.onload= ->
+			res reader.result
+			return
 		reader.onerror= rej
 		reader.readAsDataURL file
 		return
@@ -107,3 +109,12 @@ _disableGreaterThan= (nodes, index)->
 		while i < len
 			nodes[i++].classList.add 'disabled'
 	return
+
+# Chrome VH fix
+_vhFix= (event)->
+	requestAnimationFrame (t)->
+		document.documentElement.style.setProperty '--vh', "#{window.innerHeight}px"
+		return
+	return
+window.addEventListener 'resize', _vhFix, {capture: no, passive: yes}
+_vhFix()

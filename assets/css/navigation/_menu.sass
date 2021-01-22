@@ -4,7 +4,7 @@
 	margin: 0
 	padding: 0
 	background: $default-bg
-.m-item
+.m-item, .m-flat
 	@extend %tiny-padding
 	display: block
 	color: inherit
@@ -12,15 +12,22 @@
 	transition: all $animate-fast ease-in-out
 	white-space: nowrap
 	cursor: pointer
-	&:hover
-		color: $link-hover
-		text-indent: 10px
 	&.active
 		background: $menu-active-bg
 		color: $link-active
 	&.hover
 		&:hover
 			background: $default-light
+.m-item
+	&:hover
+		color: $link-hover
+		text-indent: 10px
+.m-flat
+	&:hover
+		text-decoration: none
+		color: $link-hover
+		background: $default-light
+
 
 // ul.menu
 // 	> li

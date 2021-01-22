@@ -17,9 +17,11 @@ html
 	line-height: 1.6
 	// font-family: "Roboto", "Helvetica", "Arial", sans-serif
 	font-family: $font-familly
-	font-size: $text-size
+	font-size: $text-size-mobile
 	font-weight: 400
 	@extend %noselect
+	@media(min-width: 600px)
+		font-size: $text-size
 html, body
 	margin: 0
 
@@ -44,3 +46,14 @@ html, body
 
 .loading
 	@extend %no-events
+
+// invert
+.white-section
+	background: var(--white-bg)
+	color: var(--white-color)
+	h1, h2, h3, h4, h5, h6
+		color: var(--white-headr)
+	a
+		color: var(--white-lnk)
+		&:hover
+			color: var(--white-lnk-h)

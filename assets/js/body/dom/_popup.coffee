@@ -125,6 +125,7 @@ class _Popup extends EventEmitter
 		throw new Error "Missing options.element" unless options.element
 		# attrs
 		@_popup=	null
+		@_popupList= null # effectif list that contains items
 		@_element=	options.element
 		@_margin=	options.margin or 0
 		@_float=	options.float isnt false	# if moving the popup depending on the available space
@@ -144,10 +145,13 @@ class _Popup extends EventEmitter
 		@closeOnEsc=	options.closeEsc isnt false
 		@closeOnClickOutside= options.closeClickOutside isnt false
 		# Listeners
-		@_closeEscListener=		@__escListener.bind this
-		@_closeOutsideListener=	@__clickListener.bind this
+		@_keyup=				@_keyup.bind this
+		@_keydown=				@_keydown.bind this
+		@_click=				@_click.bind this
 		@_closeWindowResize=	@close.bind this
+		@_hback= null # history back object
 		# Set popup
+		(@_divTransp= document.createElement 'div').className='popupTransp'
 		@setPopup popupDiv if popupDiv= options.popup
 		return
 	###* Open popup ###
@@ -155,6 +159,11 @@ class _Popup extends EventEmitter
 		throw new Error "Missing popup" unless popupDiv= @_popup
 		return this if @_isOpen
 		@_isOpen= yes
+		# Add transparent div
+		document.body.appendChild @_divTransp
+		# Router back listener
+		ob.cancel() if ob= @_hback
+		@_hback= ob.whenBack @_closeWindowResize if ob= Core.defaultRouter
 		# Show popup
 		# popupDiv= @_popup
 		# popupDiv.classList.remove 'hidden'
@@ -176,8 +185,9 @@ class _Popup extends EventEmitter
 			if @_isOpen
 				@emit 'open', position: currentPos
 				# Add listeners
-				document.addEventListener 'keyup', @_closeEscListener, {capture: no, passive: yes}
-				document.addEventListener 'click', @_closeOutsideListener, {capture: yes, passive: yes}
+				document.addEventListener 'keyup', @_keyup, {capture: yes, passive: yes}
+				document.addEventListener 'keydown', @_keydown, {capture: yes, passive: no}
+				document.addEventListener 'click', @_click, {capture: yes, passive: yes}
 				window.addEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
 				window.addEventListener 'scroll', @_closeWindowResize, {capture: no, passive: yes}
 			return
@@ -186,11 +196,16 @@ class _Popup extends EventEmitter
 	close: ->
 		return this unless (popupDiv= @_popup) and @_isOpen
 		@_isOpen= no
+		# remove transparent body
+		document.body.removeChild @_divTransp
 		# Remove listeners
-		document.removeEventListener 'keyup', @_closeEscListener, {capture: no, passive: yes}
-		document.removeEventListener 'click', @_closeOutsideListener, {capture: yes, passive: yes}
+		document.removeEventListener 'keyup', @_keyup, {capture: yes, passive: yes}
+		document.removeEventListener 'keydown', @_keydown, {capture: yes, passive: no}
+		document.removeEventListener 'click', @_click, {capture: yes, passive: yes}
 		window.removeEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
 		window.removeEventListener 'scroll', @_closeWindowResize, {capture: no, passive: yes}
+		# Router listener
+		@_hback?.cancel()
 		# animation
 		currentPos= @_currentPos
 		@emit 'closing', position: currentPos
@@ -258,9 +273,11 @@ class _Popup extends EventEmitter
 	get element(){return this._element;}
 
 	get popup(){return this._popup;}
+	get menu(){return this._popupList; }
 	```
 	setPopup: (popupDiv)->
 		this._popup= popupDiv;
+		@_popupList?= popupDiv
 		# Init popup
 		popupClassList= popupDiv.classList
 		popupClassList.add 'popup'
@@ -269,21 +286,79 @@ class _Popup extends EventEmitter
 		if popupArr= popupDiv[POPUP_SYMB] then popupArr.push this
 		else popupDiv[POPUP_SYMB]= [this]
 		this # chain
+	setMenu: (menuDiv)->
+		@_popupList= menuDiv
+		this # chain
 
 	###* When a controller inside popup has done ###
-	done: (component, strValue)->
+	done: (component)->
 		@close()
 		# Check for input
-		if (fCtnrl= @_element.closest('.f-cntrl')) and (input= fCtnrl.getElementsByClassName('f-input')[0])
+		input= @_element
+		if input.classList.contains('f-input') or (input= input.closest('.f-cntrl')) and (input= input.getElementsByClassName('f-input')[0])
 			input[INPUT_COMPONENT_SYMB]= component
+			strValue= component.strValue or component.value
 			if input.formAction then input.value= strValue # form control
 			else input.innerText= strValue # otherwise (div, ...)
 		return
 
-	# Listeners
-	__escListener: (event)->
-		@close() if @closeOnEsc and event.keyCode is 27
+	###* Keydown listener ###
+	_keydown: (event)->
+		event.preventDefault() if event.keyCode in [38, 40, 13]
 		return
-	__clickListener: (event)->
-		@close() if @closeOnClickOutside and @_popup isnt event.target.closest('.popup')
+	###* Keyup listener ###
+	_keyup: (event)->
+		switch event.keyCode
+			when 13 # Enter
+				# Apply click
+				if (c= @_popupList) and (c= c.querySelector(':scope>.active'))
+					@close()
+					c.click()
+			when 27 # ESC
+				@close() if @closeOnEsc
+			when 37, 39 # Arrow left, Arrow right
+				return # ignore
+			when 38 # Arrow up
+				@up(event)
+			when 40 # Arrow down
+				@down(event)
+		return
+	_click: (event)->
+		target= event.target
+		if @_popup is target.closest('.popup')
+			if li= target.closest('[d-value]')
+				@setById li.getAttribute 'd-value'
+		else if @closeOnClickOutside
+			@close()
+		return
+	###* set value by id ###
+	setById: (id)->
+		@done {value:id, strValue: id}
+		this # chain
+	###* Apply <enter> ###
+	_apply: (event)->
+		if (c= @_popupList) and (c= c.querySelector(':scope>.active'))
+			@setById c.getAttribute 'd-value'
+		return
+	###* list up down ###
+	up: (event)-> @_up event, yes
+	down: (event)-> @_up event, no
+	_up: (event, isUp)->
+		return unless resultsDiv= @_popupList
+		if li= resultsDiv.querySelector ':scope>.active'
+			li.classList.remove 'active'
+			if isUp
+				if li is resultsDiv.firstElementChild
+					li= resultsDiv.lastElementChild
+				else
+					li= li.previousElementSibling
+			else
+				if li is resultsDiv.lastElementChild
+					li= resultsDiv.firstElementChild
+				else
+					li= li.nextElementSibling
+		else
+			li= if isUp then resultsDiv.lastElementChild else resultsDiv.firstElementChild
+		# Set value
+		li?.classList.add 'active'
 		return

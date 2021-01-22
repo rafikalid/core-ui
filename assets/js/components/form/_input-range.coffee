@@ -17,6 +17,7 @@ Component.defineInit 'input-range', class InputRange extends InputAbstract
 			value:			value
 			tmpValue:		value	# temp value when draging
 			readonly:		!!attributes.readonly
+			done:			element.getAttribute 'done'
 			#
 			min:			_float attributes.min, 0
 			max:			_float attributes.max, 100
