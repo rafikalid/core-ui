@@ -42,36 +42,36 @@ form.input-date-view.grow1.f-col(v-submit="selectValue")
 		if showHours
 			-hasPrev= true;
 			.gv.f-cntrl
-				.btn.flat(d-click="inc 1") ⮝
+				.btn.flat(d-click="inc 1") !{arrowIco.up}
 				input.f-input.w40px.t-center(type="number" name="h" value=hours min=minHour max=maxHour d-loop d-select tabindex="1")
-				.btn.flat(d-click="inc -1") ⮟
+				.btn.flat(d-click="inc -1") !{arrowIco.down}
 		if showMinutes
 			if hasPrev
 				|  : 
 			else
 				-hasPrev= true;
 			.gv.f-cntrl
-				.btn.flat(d-click="inc 1") ⮝
+				.btn.flat(d-click="inc 1") !{arrowIco.up}
 				input.f-input.w40px.t-center(type="number" name="i" value=currentDate.getMinutes() max="59" min="0" d-loop d-select tabindex="1")
-				.btn.flat(d-click="inc -1") ⮟
+				.btn.flat(d-click="inc -1") !{arrowIco.down}
 		if showSeconds
 			if hasPrev
 				|  : 
 			else
 				-hasPrev= true;
 			.gv.f-cntrl
-				.btn.flat(d-click="inc 1") ⮝
+				.btn.flat(d-click="inc 1") !{arrowIco.up}
 				input.f-input.w40px.t-center(type="number" name="s" value=currentDate.getSeconds() max="59" min="0" d-loop d-select tabindex="1")
-				.btn.flat(d-click="inc -1") ⮟
+				.btn.flat(d-click="inc -1") !{arrowIco.down}
 		if showMilliseconds
 			if hasPrev
 				|  : 
 			else
 				-hasPrev= true;
 			.gv.f-cntrl
-				.btn.flat(d-click="inc 1") ⮝
+				.btn.flat(d-click="inc 1") !{arrowIco.up}
 				input.f-input.w40px.t-center(type="number" name="ms" value=currentDate.getMilliseconds() max="99" min="0" d-loop placeholder="ss" d-select tabindex="1")
-				.btn.flat(d-click="inc -1") ⮟
+				.btn.flat(d-click="inc -1") !{arrowIco.down}
 		if showAmPm
 			.f-cntrl
 				input(type="hidden" name="tt" value=tt)

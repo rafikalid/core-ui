@@ -9,10 +9,13 @@
 				|!{year-5} - !{year+6}
 			default
 				|#{attrs.currentView.pattern.format(currentDate)}
-	if header
-		|!{header}
-	else
-		.g
+	//- Header
+	.g
+		if arrowIco
+			span.btn(d-click="go up") !{arrowIco.up}
+			span.btn(d-click="go prev") !{arrowIco.left}
+			span.btn(d-click="go next") !{arrowIco.right}
+		else
 			span.btn(d-click="go up") 🡅
 			span.btn(d-click="go prev") 🡄
 			span.btn(d-click="go next") 🡆

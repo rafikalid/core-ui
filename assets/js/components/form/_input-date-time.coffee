@@ -7,7 +7,19 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		super element
 		element= @element # case when element is string
 		childs= element.childNodes
-		@_header= (child= childs[0]) and child.outerHTML
+		if childs.length >= 4
+			@_arrowIco=
+				up:		childs[0].outerHTML
+				right:	childs[1].outerHTML
+				down:	childs[2].outerHTML
+				left:	childs[3].outerHTML
+		else
+			@_arrowIco=
+				up:		'⮝'
+				right:	'🡆'
+				down:	'⮟'
+				left:	'🡄'
+		# @_header= (child= childs[0]) and child.outerHTML
 		return
 	###* @private Get attributes ###
 	_loadAttributes: ->
@@ -63,7 +75,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		inputAttrs.value= attrs.value
 		inputAttrs.min= attrs.min
 		inputAttrs.max= attrs.max
-		return Core.html.inputDate input: inputAttrs, attrs: attrs, header: @_header
+		return Core.html.inputDate input: inputAttrs, attrs: attrs, arrowIco: @_arrowIco
 
 	### GETTERS ###
 	```
@@ -293,7 +305,7 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		currentView= attrs.currentView= pv
 
 		# Create days view
-		attrArg= {attrs:attrs}
+		attrArg= {attrs:attrs, arrowIco: @_arrowIco}
 		switch currentView.name
 			when 'g-years'
 				view= Core.html.inputDateGYears attrArg
