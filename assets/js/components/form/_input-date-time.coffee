@@ -338,11 +338,13 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 			# Animation
 			_animate= (el, keyframes)->
 				el.style.cssText= oldCss
-				el.animate(keyframes, {duration: 200, easing: 'ease'})
-					.onfinish= ->
-						container.removeChild oldView
-						el.style.cssText= ''
-						return
+				try
+					await el.animate(keyframes, {duration: 200, easing: 'ease'})
+					.finished
+				catch error
+					Core.error 'Animate', error
+				container.removeChild oldView
+				el.style.cssText= ''
 				return
 			switch transition
 				when 'up'

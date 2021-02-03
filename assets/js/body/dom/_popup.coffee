@@ -174,22 +174,28 @@ class _Popup extends EventEmitter
 		@emit 'opening', position: currentPos
 		# Apply animation
 		animB= _POPUP_ANIM[currentPos] or _POPUP_ANIM.top
-		popupDiv.animate({
-			opacity: [0.5, 1]
-			transform: [
-				"translateX(#{animB[0]}px) translateY(#{animB[1]}px)"
-				""
-			]
-		}, {duration: Core.ANIM_FAST}).finished.then =>
+		self= this
+		do ->
+			# Exec animation
+			try
+				await popupDiv.animate({
+					opacity: [0.5, 1]
+					transform: [
+						"translateX(#{animB[0]}px) translateY(#{animB[1]}px)"
+						""
+					]
+				}, {duration: Core.ANIM_FAST}).finished
+			catch error
+				Core.error 'Animate', error
 			# Close listeners
-			if @_isOpen
-				@emit 'open', position: currentPos
+			if self._isOpen
+				self.emit 'open', position: currentPos
 				# Add listeners
-				document.addEventListener 'keyup', @_keyup, {capture: yes, passive: yes}
-				document.addEventListener 'keydown', @_keydown, {capture: yes, passive: no}
-				document.addEventListener 'click', @_click, {capture: yes, passive: yes}
-				window.addEventListener 'resize', @_closeWindowResize, {capture: yes, passive: yes}
-				window.addEventListener 'scroll', @_closeWindowResize, {capture: no, passive: yes}
+				document.addEventListener 'keyup', self._keyup, {capture: yes, passive: yes}
+				document.addEventListener 'keydown', self._keydown, {capture: yes, passive: no}
+				document.addEventListener 'click', self._click, {capture: yes, passive: yes}
+				window.addEventListener 'resize', self._closeWindowResize, {capture: yes, passive: yes}
+				window.addEventListener 'scroll', self._closeWindowResize, {capture: no, passive: yes}
 			return
 		return this # chain
 	###* Close popup ###
@@ -210,13 +216,20 @@ class _Popup extends EventEmitter
 		currentPos= @_currentPos
 		@emit 'closing', position: currentPos
 		animB= _POPUP_ANIM[currentPos] or _POPUP_ANIM.top
-		popupDiv.animate({
-			opacity: [1, 0.5]
-			transform: ["", "translateX(#{animB[0]}px) translateY(#{animB[1]}px)"]
-		}, {duration: Core.ANIM_FAST}).finished.then =>
-			unless @_isOpen
-				@_popup.classList.add 'hidden'
-				@emit 'close', position: currentPos
+		# Do animation
+		self= this
+		do ->
+			try
+				await popupDiv.animate({
+					opacity: [1, 0.5]
+					transform: ["", "translateX(#{animB[0]}px) translateY(#{animB[1]}px)"]
+				}, {duration: Core.ANIM_FAST}).finished
+			catch error
+				Core.error 'Animation', error
+			# After anim
+			unless self._isOpen
+				self._popup.classList.add 'hidden'
+				self.emit 'close', position: currentPos
 			return
 		return this
 	###* toggle ###
