@@ -502,3 +502,12 @@ Component.defineInit 'input-date', class InputDate extends InputAbstract
 		for v in attrs.value
 			values.push pattern.format v
 		return values.join ', '
+
+	### Validation ignore: value already validated by the component ###
+	'v-max':	(v)-> v
+	# 'v-lte':	-> true
+	# 'v-lt':		-> true
+	#
+	'v-min':	(v)-> v
+	# 'v-gte':	-> true
+	# 'v-gt':		-> true
