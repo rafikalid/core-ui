@@ -16,6 +16,9 @@ GRID_RESIZE_CURSORS=
 	B:	's-resize'	# BOTTOM
 GRID_SYMB= Symbol 'GridJs'
 
+# Widgets
+_gridJsWidgetsMap= new Map()
+
 # CLASS
 Component.defineInit 'grid-js', class GridJs extends Component
 	constructor: (element)->
@@ -24,7 +27,7 @@ Component.defineInit 'grid-js', class GridJs extends Component
 		# Init all elements
 		@_enabled= null # if the grid is enabled
 		for child in element.children
-			child[GRID_SYMB]= new GridJsItem(child, _getPrefixedAttributes child)
+			new GridJsItem(child, _getPrefixedAttributes child)
 		# Events
 		@_mouseDown= @_mouseDown.bind this
 		@_mouseMove= @_mouseMove.bind this
@@ -41,15 +44,17 @@ Component.defineInit 'grid-js', class GridJs extends Component
 		return
 
 	###* Append child ###
-	append: (child)->
-		return if child[GRID_SYMB] and child.parentNode is @element
+	appendChild: (child)->
+		container= @element
+		return if child[GRID_SYMB] and child.parentNode is container
 		frag= document.createDocumentFragment()
 		frag.appendChild child # Accept html elements or document fragment
 		# Init content
 		Core.init frag
 		# Add private values
 		for child in frag.children
-			child[GRID_SYMB]= new GridJsItem(child, _getPrefixedAttributes child)
+			new GridJsItem(child, _getPrefixedAttributes child)
+		container.appendChild frag
 		this # chain
 	###* Remove child ###
 	removeChild: (child)->
@@ -88,8 +93,8 @@ Component.defineInit 'grid-js', class GridJs extends Component
 				style.gridTemplateColumns= ''
 				style.gridAutoRows=	''
 			# Enable items
-			for child in element.children
-				child[GRID_SYMB].adjustView isEnabled
+			for child in element.children when childObj= child[GRID_SYMB]
+				childObj.adjustView isEnabled
 		# Calc Grids cols
 		options.colCount= window.getComputedStyle(element).gridTemplateColumns.split(' ').length
 		return
@@ -103,7 +108,7 @@ Component.defineInit 'grid-js', class GridJs extends Component
 			child= target while (target= target.parentNode) isnt element
 			# Check for resize area
 			st= target.style
-			childOptions= child[GRID_SYMB]._options
+			childOptions= child[GRID_SYMB].attrs
 			if resizeAreaCursor= _gridJsResizeArea child, childOptions, event
 				st.cursor= resizeAreaCursor
 			else
@@ -118,7 +123,7 @@ Component.defineInit 'grid-js', class GridJs extends Component
 		# Get Child
 		child= target
 		child= target while (target= target.parentNode) isnt gridContainer
-		childOptions= child[GRID_SYMB]._options
+		childOptions= child[GRID_SYMB].attrs
 		# If resize item
 		if resizeAreaCursor= _gridJsResizeArea child, childOptions, event
 			originalWidth= child.offsetWidth
@@ -234,3 +239,25 @@ Component.defineInit 'grid-js', class GridJs extends Component
 			document.addEventListener 'mousemove', moveListener, listenerOpts
 			document.addEventListener 'mouseup', mouseUpListener, listenerOpts
 		return
+
+	###* Append Widgets ###
+	append: (arr)->
+		throw new Error "Illegal arguments" unless arguments.length is 1 and _isArray(arr)
+		frag= document.createDocumentFragment()
+		for item in arr
+			throw new Error "Unknown widget: #{item.name}" unless clazz= _gridJsWidgetsMap.get item.name
+			childOb= new clazz item
+			frag.appendChild childOb.element
+		# Init content
+		Core.init frag
+		@element.appendChild frag
+		this # chain
+
+	###* WIDGETS ###
+	@Widget: GridJsWidget
+	@define: (name, constructor)->
+		throw new Error "Illegal arguments" unless arguments.length is 2 and typeof name is 'string' and typeof constructor is 'function'
+		throw new Error "Already defined widget: #{name}" if _gridJsWidgetsMap.has name
+		throw new Error "Expected to extend ::Widget" unless constructor.prototype instanceof GridJsWidget
+		_gridJsWidgetsMap.set name, constructor
+		this # chain

@@ -17,14 +17,15 @@ GRID_ITEM_DEFAULTS=
 
 # Class
 class GridJsItem
-	constructor: (element, options)->
+	constructor: (element, attrs)->
 		# Attributes
 		@element= element
-		@_options= _assign {}, GRID_ITEM_DEFAULTS, options
+		@attrs= _assign {}, GRID_ITEM_DEFAULTS, attrs
+		element[GRID_SYMB]= this if element
 		return
 	### Adjust item ###
 	adjustView: (isGridEnabled)->
-		attrs= @_options
+		attrs= @attrs
 		style= @element.style
 		if isGridEnabled
 			style.gridColumn= "auto / span #{attrs.cols}"

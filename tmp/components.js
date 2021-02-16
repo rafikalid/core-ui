@@ -69,6 +69,12 @@ while (i < 8) {
 pug_html = pug_html + "\u003Cdiv" + (" class=\"btn ouline\""+pug.attr("d-click", 'select '+(startYear+5), true, false)) + "\u003E" + (pug.escape(null == (pug_interp = startYear) ? "" : pug_interp)) + " - " + (pug.escape(null == (pug_interp = startYear+=11) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
 ++startYear;
 }
+pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateMonths:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"input-date-view grow1 grid grid-c xs4 pt\"\u003E";
+var i=0, months= i18n.months;
+var currentMonth= attrs.currentDate.getMonth()
+while (i < 12) {
+pug_html = pug_html + "\u003Cdiv" + (" class=\"btn flat\""+pug.attr("d-click", 'select '+i, true, false)) + "\u003E" + (pug.escape(null == (pug_interp = months[i++]) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
+}
 pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateHeader:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (arrowIco, attrs) {pug_html = pug_html + "\u003Cdiv class=\"header shrink0 f-y pt\"\u003E\u003Cdiv class=\"grow1 truncate t-center\" d-click=\"go up\"\u003E";
 var currentDate= attrs.currentDate;
 var year= currentDate.getFullYear();
@@ -90,13 +96,7 @@ pug_html = pug_html + "\u003Cspan class=\"btn\" d-click=\"go up\"\u003E" + (null
 else {
 pug_html = pug_html + "\u003Cspan class=\"btn\" d-click=\"go up\"\u003E🡅\u003C\u002Fspan\u003E\u003Cspan class=\"btn\" d-click=\"go prev\"\u003E🡄\u003C\u002Fspan\u003E\u003Cspan class=\"btn\" d-click=\"go next\"\u003E🡆\u003C\u002Fspan\u003E";
 }
-pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";}.call(this,"arrowIco" in locals_for_with?locals_for_with.arrowIco:typeof arrowIco!=="undefined"?arrowIco:undefined,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateMonths:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (attrs) {pug_html = pug_html + "\u003Cdiv class=\"input-date-view grow1 grid grid-c xs4 pt\"\u003E";
-var i=0, months= i18n.months;
-var currentMonth= attrs.currentDate.getMonth()
-while (i < 12) {
-pug_html = pug_html + "\u003Cdiv" + (" class=\"btn flat\""+pug.attr("d-click", 'select '+i, true, false)) + "\u003E" + (pug.escape(null == (pug_interp = months[i++]) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
-}
-pug_html = pug_html + "\u003C\u002Fdiv\u003E";}.call(this,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateTime:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (arrowIco, attrs) {var currentDate= attrs.currentDate, patterns= attrs.pattern.patterns;
+pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";}.call(this,"arrowIco" in locals_for_with?locals_for_with.arrowIco:typeof arrowIco!=="undefined"?arrowIco:undefined,"attrs" in locals_for_with?locals_for_with.attrs:typeof attrs!=="undefined"?attrs:undefined));;return pug_html;},inputDateTime:function(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (arrowIco, attrs) {var currentDate= attrs.currentDate, patterns= attrs.pattern.patterns;
 var showHours, showMinutes, showSeconds, showMilliseconds, showAmPm, i, len, hasPrev= false;
 len= patterns.length;
 for(i=0; i < len; i++)
