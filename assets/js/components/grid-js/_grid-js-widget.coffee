@@ -26,3 +26,15 @@ class GridJsWidget extends GridJsItem
 
 	###* Method to be overrided ###
 	getHTML: -> '<div></div>'
+
+	###* Reload widget content ###
+	reload: ->
+		oldElement= @element
+		element= @element= _toHTMLElement @getHTML()
+		element[GRID_SYMB]= this
+		if parent= oldElement.parentNode
+			requestAnimationFrame (t)->
+				parent.insertBefore element, oldElement
+				parent.removeChild oldElement
+				return
+		return

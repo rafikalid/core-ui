@@ -34,3 +34,6 @@ class GridJsItem
 			style.gridColumn= ''
 			style.gridRow= ''
 		this # chain
+
+	###* Clear ###
+	clear: ->

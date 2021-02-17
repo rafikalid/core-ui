@@ -12,7 +12,13 @@ dropdown: (event, args)->
 	dropDownBtn= event.currentTarget
 	# Create popup
 	unless popupG= dropDownBtn[DROPDOWN_SYMB]
-		if dropDownPopup= dropDownBtn.nextElementSibling
+		# Get next element
+		if dropDownPopup= args[1]
+			dropDownPopup= document.getElementById dropDownPopup
+		else
+			dropDownPopup= dropDownBtn.nextElementSibling
+		# Drop down
+		if dropDownPopup
 			popupG= dropDownBtn[DROPDOWN_SYMB]= new _Popup
 				element:	dropDownBtn
 				popup:		dropDownPopup

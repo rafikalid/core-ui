@@ -26,6 +26,7 @@ Component.defineInit 'grid-js', class GridJs extends Component
 		element= @element # case when argument element is string
 		# Init all elements
 		@_enabled= null # if the grid is enabled
+		@_widgets= new Map() # store created widgets
 		for child in element.children
 			new GridJsItem(child, _getPrefixedAttributes child)
 		# Events
@@ -58,6 +59,16 @@ Component.defineInit 'grid-js', class GridJs extends Component
 		this # chain
 	###* Remove child ###
 	removeChild: (child)->
+		# prepare
+		if child instanceof GridJsItem
+			childOb= child
+			child= child.element
+		else
+			childOb= child[GRID_SYMB]
+			throw new Error "Illegal element!" unless childOb
+		# remove
+		@element.removeChild child
+		@_widgets.delete childOb
 		this # chain
 	### window resize ###
 	_onWinResize: (event)->
@@ -244,10 +255,14 @@ Component.defineInit 'grid-js', class GridJs extends Component
 	append: (arr)->
 		throw new Error "Illegal arguments" unless arguments.length is 1 and _isArray(arr)
 		frag= document.createDocumentFragment()
+		widgetMap= @_widgets
 		for item in arr
+			throw new Error "Missing item.id" unless item.id
+			throw new Error "Missing item.name" unless item.name
 			throw new Error "Unknown widget: #{item.name}" unless clazz= _gridJsWidgetsMap.get item.name
 			childOb= new clazz item
 			frag.appendChild childOb.element
+			widgetMap.set item.id, childOb
 		# Init content
 		Core.init frag
 		@element.appendChild frag
@@ -261,3 +276,15 @@ Component.defineInit 'grid-js', class GridJs extends Component
 		throw new Error "Expected to extend ::Widget" unless constructor.prototype instanceof GridJsWidget
 		_gridJsWidgetsMap.set name, constructor
 		this # chain
+
+	# Get created widget
+	getWidget: (id)-> @_widgets.get id
+
+	# Remove all
+	clear: ->
+		widgets= @_widgets
+		widgets.forEach (v, k)->
+			v.clear()
+			return
+		widgets.clear()
+		return
