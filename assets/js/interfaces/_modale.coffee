@@ -8,6 +8,8 @@ modal: (html)->
 	_close= null
 	_historyBackClose= null
 	element= null
+	_click= null # event listener
+	_doRemoveModalWhenClose= yes # remove Modal if added dynamically
 	# Keyboard listener
 	# _keyboardListener= (event)->
 	# 	k= event.keyCode
@@ -24,13 +26,17 @@ modal: (html)->
 		if ob= Core.defaultRouter
 			_historyBackClose= ob.whenBack ->
 				res 'close'
-				return 
+				return
 		# DOM
 		body= document.body
 		body.classList.add 'modal-open'
 		# Render
-		element= _toHTMLElement html
-		body.appendChild element
+		element= if typeof html is 'string' then _toHTMLElement html else html
+		# Append to body
+		if element.parentNode is body
+			_doRemoveModalWhenClose= no
+		else
+			body.appendChild element
 		# Promise
 		_click= (event)->
 			target= event.target
@@ -48,8 +54,12 @@ modal: (html)->
 		_historyBackClose?.cancel()
 		# Body classes
 		body= document.body
-		body.removeChild element if element?
-		body.classList.remove 'modal-open' unless body.querySelector ':scope>.modal'
+		if _doRemoveModalWhenClose
+			body.removeChild element if element?
+		else
+			element.classList.add 'hidden'
+			element.removeEventListener 'click', _click, false
+		body.classList.remove 'modal-open' unless body.querySelector ':scope>.modal:not(.hidden)'
 		return res
 	# Add APIs
 	p.body= element
