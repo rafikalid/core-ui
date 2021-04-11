@@ -6,7 +6,7 @@
 .modal-open
 	overflow: hidden
 	>:not(.modal)
-		filter: blur(2px)
+		filter: blur(5px) contrast(45%) brightness(130%)
 
 .modal
 	display: flex
@@ -40,6 +40,7 @@
 
 .modal-body
 	animation: modal-up $animate-fast ease
+	box-shadow: 0 0 4px 0px rgba(255, 255, 255, 0.2)
 
 @keyframes modal-up
 	from

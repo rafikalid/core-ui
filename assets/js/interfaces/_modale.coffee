@@ -32,6 +32,7 @@ modal: (html)->
 		body.classList.add 'modal-open'
 		# Render
 		element= if typeof html is 'string' then _toHTMLElement html else html
+		element.classList.remove 'hidden'
 		# Append to body
 		if element.parentNode is body
 			_doRemoveModalWhenClose= no

@@ -6,7 +6,7 @@ GRID_DEFAULT=
 	row:	50
 	colGap: 10
 	rowGap: 10
-	minWidth: 800 # min width to use grid view
+	minWidth: 600 # min width to use grid view
 	# Grid cols count, this is a private attribute and will be changed when
 	# window resized
 	colCount: 1
@@ -257,12 +257,15 @@ Component.defineInit 'grid-js', class GridJs extends Component
 		frag= document.createDocumentFragment()
 		widgetMap= @_widgets
 		for item in arr
-			throw new Error "Missing item.id" unless item.id
-			throw new Error "Missing item.name" unless item.name
-			throw new Error "Unknown widget: #{item.name}" unless clazz= _gridJsWidgetsMap.get item.name
-			childOb= new clazz item
-			frag.appendChild childOb.element
-			widgetMap.set item.id, childOb
+			try
+				throw new Error "Missing item.id" unless item.id
+				throw new Error "Missing item.name" unless item.name
+				throw new Error "Unknown widget: #{item.name}" unless clazz= _gridJsWidgetsMap.get item.name
+				childOb= new clazz item
+				frag.appendChild childOb.element
+				widgetMap.set item.id, childOb
+			catch error
+				Core.fatalError 'Widget', error
 		# Init content
 		Core.init frag
 		@element.appendChild frag
